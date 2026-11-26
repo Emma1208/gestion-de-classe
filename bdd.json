@@ -403,6 +403,10 @@
     "Éducation de base||Statistiques": {
       "p": 10,
       "x": 20
+    },
+    "Éducation de base||Arithmétique": {
+      "p": 1,
+      "x": 2
     }
   },
   "presences": {},
@@ -410,5 +414,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795735023338
+  "ts": 1795735026723
 }
