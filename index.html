@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<meta name="theme-color" content="#144a85">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="GestionClasse">
 <title>Gestion de classe</title>
 <style>
 :root{color-scheme:light;--ink:#17253b;--mut:#516078;--white:#fff;--paper:#f3f6fa;--line:#c9d4e2;--rule:#e4ebf3;--brand:#144a85;--brand-dark:#103b6d;--soft:#eaf3fd;--bad:#a52631;--ok:#156244;--focus:#1266cd;--radius:14px}
@@ -1197,6 +1203,15 @@ init();
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
 })();
+</script>
+
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(err => console.warn("SW:", err));
+  });
+}
 </script>
 
 </body>
