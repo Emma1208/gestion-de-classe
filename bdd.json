@@ -1,0 +1,28 @@
+{
+  "app": "Gestion de classe",
+  "version": 1,
+  "cle_localStorage": "cahier_cotation_v7_data",
+  "description": "Base de donnees JSON de l'application Gestion de classe. Structure identique a l'objet state de l'application.",
+  "school": {
+    "pays": "RÉPUBLIQUE DÉMOCRATIQUE DU CONGO",
+    "ministere": "MINISTÈRE DE L’ÉDUCATION NATIONALE",
+    "enseignement": "ENSEIGNEMENT PRIMAIRE, SECONDAIRE ET TECHNIQUE",
+    "province": "PROVINCE DU MANIEMA",
+    "etablissement": "COMPLEXE SCOLAIRE TUUNGANE",
+    "prof": "",
+    "annee": "",
+    "filigrane": "C.S. TUUNGANE"
+  },
+  "eleves": [],
+  "customOptions": {
+    "1ère": [],
+    "2ème": [],
+    "3ème": [],
+    "4ème": []
+  },
+  "customCoursByOption": {},
+  "notes": {},
+  "maxima": {},
+  "presences": {},
+  "presenceTeachers": {}
+}
