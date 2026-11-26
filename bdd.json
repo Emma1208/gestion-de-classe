@@ -399,6 +399,10 @@
     "Éducation de base||Algèbre": {
       "p": 40,
       "x": 80
+    },
+    "Éducation de base||Statistiques": {
+      "p": 10,
+      "x": 20
     }
   },
   "presences": {},
@@ -406,5 +410,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795735017853
+  "ts": 1795735023338
 }
