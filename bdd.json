@@ -1,8 +1,4 @@
 {
-  "app": "Gestion de classe",
-  "version": 1,
-  "cle_localStorage": "cahier_cotation_v7_data",
-  "description": "Base de donnees JSON de l'application Gestion de classe. Structure identique a l'objet state de l'application.",
   "school": {
     "pays": "RÉPUBLIQUE DÉMOCRATIQUE DU CONGO",
     "ministere": "MINISTÈRE DE L’ÉDUCATION NATIONALE",
@@ -13,7 +9,384 @@
     "annee": "",
     "filigrane": "C.S. TUUNGANE"
   },
-  "eleves": [],
+  "eleves": [
+    {
+      "id": 1,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "BAHATI KIKAO",
+      "sexe": "F"
+    },
+    {
+      "id": 2,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "BALILONOSO MUPA",
+      "sexe": "F"
+    },
+    {
+      "id": 3,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "BASHALA NGANGA",
+      "sexe": "M"
+    },
+    {
+      "id": 4,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "BATULI NZAMBIWISI",
+      "sexe": "M"
+    },
+    {
+      "id": 5,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "BENA KANKU",
+      "sexe": "F"
+    },
+    {
+      "id": 6,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "BIKUMA MAMADOU",
+      "sexe": "F"
+    },
+    {
+      "id": 7,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "BOKOTA KILONGOSI",
+      "sexe": "F"
+    },
+    {
+      "id": 8,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "BONYEMO SHOTIA",
+      "sexe": "F"
+    },
+    {
+      "id": 9,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "DIAKESE MAYIZA",
+      "sexe": "M"
+    },
+    {
+      "id": 10,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "DIMBU NINGA",
+      "sexe": "F"
+    },
+    {
+      "id": 11,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "EFAMBE LOKWA",
+      "sexe": "M"
+    },
+    {
+      "id": 12,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "EYALE SONO",
+      "sexe": "F"
+    },
+    {
+      "id": 13,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "ILENGO BETUMBA",
+      "sexe": "F"
+    },
+    {
+      "id": 14,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "ILENGO BOTUMBA",
+      "sexe": "F"
+    },
+    {
+      "id": 15,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "INONGO BERIA",
+      "sexe": "F"
+    },
+    {
+      "id": 16,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "KABASELE NTUMBA",
+      "sexe": "M"
+    },
+    {
+      "id": 17,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "KABEMBA KASANDA",
+      "sexe": "M"
+    },
+    {
+      "id": 18,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "KADIMA TSHIUNZA",
+      "sexe": "M"
+    },
+    {
+      "id": 19,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "KAMANA BIMPOLO",
+      "sexe": "F"
+    },
+    {
+      "id": 20,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "KIMOBO LUNZUNGA",
+      "sexe": "F"
+    },
+    {
+      "id": 21,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "KUKEKA MATONDO",
+      "sexe": "M"
+    },
+    {
+      "id": 22,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "KWAKENDA MAYAMBA",
+      "sexe": "M"
+    },
+    {
+      "id": 23,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "KWESEBIA BATUMUKISI",
+      "sexe": "F"
+    },
+    {
+      "id": 24,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "LUBU OTETE",
+      "sexe": "M"
+    },
+    {
+      "id": 25,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "LUFUAKENDA PANZU",
+      "sexe": "M"
+    },
+    {
+      "id": 26,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "LUYEYE MAYIMONA",
+      "sexe": "F"
+    },
+    {
+      "id": 27,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "MANANGA KOFFI",
+      "sexe": "F"
+    },
+    {
+      "id": 28,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "MANATA MAWIDI",
+      "sexe": "M"
+    },
+    {
+      "id": 29,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "MANGALA OKITO",
+      "sexe": "M"
+    },
+    {
+      "id": 30,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "MATA LANDU",
+      "sexe": "M"
+    },
+    {
+      "id": 31,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "MBAKUMUIKI MAYADILA",
+      "sexe": "F"
+    },
+    {
+      "id": 32,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "MBALA VITA",
+      "sexe": "M"
+    },
+    {
+      "id": 33,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "MBIMBA DISUEMI",
+      "sexe": "F"
+    },
+    {
+      "id": 34,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "MBO LIANGA",
+      "sexe": "M"
+    },
+    {
+      "id": 35,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "MESIA OPALA",
+      "sexe": "F"
+    },
+    {
+      "id": 36,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "MITUIDI MAYENGELE",
+      "sexe": "F"
+    },
+    {
+      "id": 37,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "MUDIATA MAKENGELE",
+      "sexe": "M"
+    },
+    {
+      "id": 38,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "MULUBA KALOMBO",
+      "sexe": "M"
+    },
+    {
+      "id": 39,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "NAKAFUANA MANDAYILA",
+      "sexe": "F"
+    },
+    {
+      "id": 40,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "NAKAWOSA NZENZA",
+      "sexe": "M"
+    },
+    {
+      "id": 41,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "NDUNDU KEMBO",
+      "sexe": "F"
+    },
+    {
+      "id": 42,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "NGALULA KIWALA",
+      "sexe": "F"
+    },
+    {
+      "id": 43,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "OMALANGA MOBA",
+      "sexe": "M"
+    },
+    {
+      "id": 44,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "PAKASA KAYANGA",
+      "sexe": "M"
+    },
+    {
+      "id": 45,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "SAMU MUYA",
+      "sexe": "M"
+    },
+    {
+      "id": 46,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "TANZI MADRANDEL",
+      "sexe": "M"
+    },
+    {
+      "id": 47,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "VANGU VEMBA",
+      "sexe": "M"
+    }
+  ],
   "customOptions": {
     "1ère": [],
     "2ème": [],
@@ -24,5 +397,9 @@
   "notes": {},
   "maxima": {},
   "presences": {},
-  "presenceTeachers": {}
+  "presenceTeachers": {},
+  "app": "Gestion de classe",
+  "version": 1,
+  "cle_localStorage": "cahier_cotation_v7_data",
+  "ts": 1795734959230
 }
