@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gestion de classe</title>
+<style>
+:root{color-scheme:light;--ink:#17253b;--mut:#516078;--white:#fff;--paper:#f3f6fa;--line:#c9d4e2;--rule:#e4ebf3;--brand:#144a85;--brand-dark:#103b6d;--soft:#eaf3fd;--bad:#a52631;--ok:#156244;--focus:#1266cd;--radius:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--paper);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{width:min(calc(100% - 64px),1440px);margin-inline:auto}
+.app-header{background:#fff;border-bottom:1px solid var(--rule)}
+.app-header .wrap{display:flex;align-items:center;gap:14px;padding-block:22px}
+.brand-mark{display:grid;place-items:center;width:46px;height:46px;flex:none;background:var(--brand);color:#fff;border-radius:13px}
+.brand-mark svg,.tab svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.app-header h1{font-size:clamp(1.18rem,2.7vw,1.48rem);line-height:1.25;letter-spacing:-.03em}
+.app-header p{font-size:.82rem;color:var(--mut);margin-top:3px}
+.local{margin-left:auto;flex:none;border:1px solid #cee4da;color:#285a47;background:#edf7f2;border-radius:999px;padding:6px 12px;font-size:.76rem;font-weight:650}
+main.wrap{margin-top:24px;margin-bottom:30px}
+.tabs{display:flex;gap:6px;padding:5px;border:1px solid var(--rule);background:#fff;border-radius:12px;width:fit-content;max-width:100%;margin-bottom:18px}
+.tab{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:8px 16px;border:0;border-radius:8px;color:var(--mut);background:transparent;font:650 .88rem/1.25 system-ui,sans-serif;cursor:pointer}
+.tab:hover{background:#f3f7fb;color:var(--brand)}
+.tab[aria-selected=true]{background:var(--soft);color:var(--brand-dark)}
+.panel{display:none;min-width:0;background:#fff;border:1px solid var(--rule);border-radius:var(--radius);padding:clamp(15px,2.3vw,30px);box-shadow:0 2px 5px #14294408}
+.panel.on{display:block}
+.page-head{margin-bottom:20px}
+.page-head h2{font-size:clamp(1.45rem,3vw,2rem);line-height:1.19;letter-spacing:-.035em}
+.page-head p{color:var(--mut);margin-top:5px;font-size:.92rem}
+.bar,.actions{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:end;margin-bottom:16px}
+.filters{padding:14px;background:#f6f8fc;border:1px solid var(--rule);border-radius:11px}
+.filters>.f{flex:1 1 135px;min-width:0}
+.f{display:flex;flex-direction:column;gap:5px;font-size:.81rem;font-weight:650;color:#344761;min-width:0;max-width:100%}
+select,input[type=text],input[type=search],input[type=number]:not(.n),input[type=date],input[type=file],textarea{font:400 .9rem/1.3 system-ui,sans-serif;color:var(--ink);border:1px solid var(--line);background:#fff;border-radius:8px;min-height:40px;padding:8px 10px;max-width:100%;min-width:0}
+input[type=search],input[type=text],select{width:100%}
+input[type=checkbox]{accent-color:var(--brand);width:16px;height:16px}
+textarea{resize:vertical}
+::placeholder{color:#65738a}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.btn{display:inline-flex;justify-content:center;align-items:center;min-height:40px;padding:8px 13px;border:1px solid var(--brand);background:var(--brand);color:#fff;border-radius:8px;font:650 .85rem/1.25 system-ui,sans-serif;cursor:pointer;text-align:center}
+.btn:hover{background:var(--brand-dark)}
+.btn.alt{background:#fff;color:var(--brand-dark);border-color:var(--line)}
+.btn.alt:hover{background:var(--soft);border-color:#98afc9}
+.btn.del{min-height:32px;background:#fff;color:var(--bad);border-color:#edc8cc;padding:5px 9px}
+.btn.del:hover{background:#fff1f2}
+.btn:disabled{opacity:.55;cursor:wait}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;align-items:center}
+.details-stack>details{margin-bottom:10px;background:#f9fbfe;border:1px solid var(--rule);border-radius:10px;padding:13px 15px}
+.details-stack>details:not([open]),.details-stack>details[hidden]{display:none}
+.details-stack summary{font-weight:700;color:var(--brand-dark);cursor:pointer}
+details .bar{margin:12px 0 5px}
+fieldset.cs{border:1px solid var(--line);border-radius:8px;padding:5px 10px 9px}
+fieldset.cs legend{padding:0 5px}
+#n-cours,#imp-cours{display:flex;flex-wrap:wrap;gap:5px 12px;font-weight:400;color:var(--ink)}
+#n-cours label,#imp-cours label{display:inline-flex;gap:5px;align-items:center}
+.stat{color:var(--mut);margin-bottom:10px;font-size:.88rem}
+.stat:empty{display:none}
+.stat b{color:var(--ink)}
+.tw{overflow:auto;max-height:68vh;border:1px solid var(--rule);border-radius:10px;background:#fff;overscroll-behavior-x:contain}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:.85rem;font-variant-numeric:tabular-nums}
+th,td{padding:8px 10px;text-align:center;white-space:nowrap;border-bottom:1px solid var(--rule)}
+thead th{position:sticky;top:0;z-index:2;background:#eef3f9;color:#253d5c;font-weight:700;height:40px}
+thead tr+tr th{top:40px}
+thead th.p1{background:#e4effc;color:#164571}
+thead th.p2{background:#e2f2ef;color:#205951}
+thead th.x{background:#fff0df;color:#764312}
+thead th.t{background:#e6edf9;color:#203f6c}
+.nm{text-align:left;position:sticky;left:0;z-index:1;background:#fff;min-width:145px;font-weight:650;box-shadow:1px 0 0 var(--rule)}
+thead th.nm{z-index:3;background:#eef3f9}
+tbody tr:nth-child(even) td{background:#f8fafd}
+tbody tr:hover td{background:#eff6ff}
+tbody tr:last-child td{border-bottom:0}
+td.t{background:#eef3fb!important;font-weight:700}
+td.xm{background:#fff9f1!important}
+td.bad{color:var(--bad)}td.ok{color:var(--ok)}
+tr.grp td{background:#eaf1fa!important;color:#294865;text-align:left;font-weight:750;position:sticky;left:0;white-space:normal}
+input.n{width:56px;min-height:34px;text-align:center;border:1px solid var(--line);border-radius:6px;font:inherit;color:var(--ink);background:#fff}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.k{padding:14px;border:1px solid var(--rule);border-radius:10px;background:#f6f9fd}
+.k small{display:block;color:var(--mut);font-size:.78rem;font-weight:650}
+.k strong{display:block;color:var(--brand-dark);font-size:1.65rem;line-height:1.15;margin-top:7px;letter-spacing:-.04em}
+.empty{padding:27px 14px;color:var(--mut);text-align:center;white-space:normal}
+.note{margin-top:12px;color:var(--mut);font-size:.82rem;max-width:96ch}
+footer{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:var(--mut);font-size:.79rem}
+footer span{margin-right:auto}
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9;width:max-content;max-width:calc(100% - 28px)}
+#toast.on{opacity:1}
+@media(max-width:700px){.wrap{width:calc(100% - 24px)}.app-header .wrap{padding-block:14px}.local{display:none}main.wrap{margin-top:14px}.tabs{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:12px}.tab{padding-inline:6px}.page-head{margin-bottom:14px}.filters>.f{flex-basis:105px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}footer span{flex-basis:100%}}
+@media print{@page{size:landscape;margin:9mm}body{background:#fff}.wrap{width:100%;margin:0!important}.app-header .wrap{padding:0 0 8px}.local,.brand-mark,.tabs,.bar,.actions,.tools,.details-stack,footer,.btn,#toast{display:none!important}.panel.on{border:0;box-shadow:none;padding:10px 0}.tw{max-height:none;overflow:visible;border-radius:0}thead th,.nm{position:static!important}th,td{padding:3px 4px;font-size:8pt}.nm{min-width:0}#cahier input.n{width:23px;min-height:20px;font-size:8pt;appearance:textfield}#cahier input.n::-webkit-inner-spin-button{appearance:none}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.tabs{flex-wrap:wrap}
+.student-actions{display:inline-flex;gap:6px;align-items:center}
+.btn.rename{min-height:32px;padding:5px 9px}
+#rename-dialog{margin:auto;width:min(440px,calc(100% - 32px));border:1px solid var(--line);border-radius:14px;padding:22px;color:var(--ink)}
+#rename-dialog::backdrop{background:#17253b77}
+#rename-dialog .f{margin:12px 0}
+#rename-dialog .actions{margin:0}
+#school-form .bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}
+#school-form .f{align-self:end}
+#fiche .fiche-scroll{overflow:auto;background:#eef2f7;border:1px solid var(--line);border-radius:10px;padding:12px}
+.fiche-page{width:190mm;max-width:100%;min-width:172mm;margin:0 auto 12px;padding:15mm 6mm 8mm;background:white;color:black;font:9pt/1.05 Arial,sans-serif;outline:1px solid #e0e0e0}
+.fiche-page:last-child{margin-bottom:0}
+.fiche-institution{text-align:center;font-weight:800;text-transform:uppercase;overflow-wrap:anywhere}
+.fiche-institution::after{content:'';display:block;width:56%;height:1.3mm;background:#000;margin:0.5mm auto 6mm}
+.fiche-meta{display:grid;grid-template-columns:55% 45%;font-weight:700;margin:0 5% 3mm;overflow-wrap:anywhere}
+.fiche-title{font:bold 14pt/1 Arial,sans-serif;text-align:center;text-decoration:underline;margin:0 0 4mm}
+.fiche-grid{position:relative;isolation:isolate;overflow:hidden}
+.fiche-watermark{position:absolute;z-index:-1;top:46%;left:50%;transform:translate(-50%,-50%) rotate(-43deg);color:#d6d6d6;font:clamp(28px,5.3vw,57px)/1 Arial,sans-serif;white-space:nowrap;pointer-events:none;max-width:155mm;text-align:center}
+.fiche-table{table-layout:fixed;border-collapse:collapse;border:1.25px solid #141414;color:black;font:8.5pt/1.05 'Times New Roman',serif}
+.fiche-table th,.fiche-table td,.fiche-table tbody tr:last-child td{border:1px solid #222;padding:0.25mm 0.45mm;white-space:normal;overflow-wrap:anywhere;height:3.85mm;min-width:0}
+.fiche-table thead th,.fiche-table thead tr+tr th{height:3.9mm;position:static;background:#e7e3ce;color:#000;font-weight:bold}
+.fiche-table thead th.fiche-number{background:#fff;vertical-align:top}
+.fiche-table .fiche-names{width:30.8%}
+.fiche-table .fiche-num{width:5.1%}
+.fiche-table .fiche-first{width:5.1%}
+.fiche-table .fiche-max-title{letter-spacing:.04em}
+.fiche-table .max-arrow{display:inline-block;width:13mm;height:1.8mm;margin-left:2mm;vertical-align:middle;background:#000;clip-path:polygon(0 38%,80% 38%,80% 0,100% 50%,80% 100%,80% 63%,0 63%)}
+.fiche-table .fiche-period{font-style:italic}
+.fiche-table .fiche-group{border-left-width:1.45px}
+.fiche-table tbody tr td{background:transparent}
+.fiche-table tbody td:nth-child(2){text-align:left}
+.fiche-table tbody td:first-child{text-align:left;padding-left:1.8mm}
+.fiche-table tbody tr:nth-child(5n) td{border-bottom-width:1.4px}
+@page cotation-form{size:A4 portrait;margin:9mm 10mm}
+@media print{
+ body.fiche-print{min-height:0}
+ body.fiche-print .app-header,body.fiche-print .panel:not(#fiche),body.fiche-print #fiche>.page-head,body.fiche-print #fiche>.note{display:none!important}
+ body.fiche-print #fiche{display:block!important;padding:0!important;border:0}
+ body.fiche-print #fiche .fiche-scroll{overflow:visible;padding:0;background:none;border:0;border-radius:0}
+ body.fiche-print .fiche-page{page:cotation-form;width:100%;max-width:none;min-width:0;outline:0;padding:9mm 0 0;margin:0;break-inside:avoid;page-break-inside:avoid;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+ body.fiche-print .fiche-page+.fiche-page{break-before:page;page-break-before:always}
+ body.fiche-print .fiche-watermark{font-size:68px}
+ body.fiche-print .fiche-table td.fiche-long-name{font-size:7.1pt;line-height:1}
+}
+</style>
+</head>
+<body>
+<header class="app-header"><div class="wrap">
+  <div class="brand-mark"><svg aria-hidden="true" width="25" height="25" viewBox="0 0 24 24"><path d="M3 19V5a2 2 0 0 1 2-2h14v18H5a2 2 0 0 1 0-4h14M8 7h7m-7 4h5"/></svg></div>
+  <div><h1>Gestion de classe</h1><p>Suivi des élèves, des notes et des présences</p></div>
+  <span class="local">Stockage local</span>
+</div></header>
+<main class="wrap">
+<div class="tabs" role="tablist" aria-label="Sections du cahier">
+  <button type="button" class="tab" role="tab" id="tab-eleves" aria-controls="eleves" aria-selected="true" tabindex="0" data-tab="eleves"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m20 0v-2a4 4 0 0 0-3-3.9M16 3.2a4 4 0 0 1 0 7.6"/><circle cx="9" cy="7" r="4"/></svg> Élèves</button>
+  <button type="button" class="tab" role="tab" id="tab-cahier" aria-controls="cahier" aria-selected="false" tabindex="-1" data-tab="cahier"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8m-8 4h8m-8 4h4"/></svg> Cotations</button>
+  <button type="button" class="tab" role="tab" id="tab-fiche" aria-controls="fiche" aria-selected="false" tabindex="-1" data-tab="fiche">Fiche de cotation</button>
+  <button type="button" class="tab" role="tab" id="tab-presences" aria-controls="presences" aria-selected="false" tabindex="-1" data-tab="presences"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18m-12 5 2 2 4-4"/></svg> Présences</button>
+  <button type="button" class="tab" role="tab" id="tab-bilan" aria-controls="bilan" aria-selected="false" tabindex="-1" data-tab="bilan"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24"><path d="M4 3v17h16m-12-4v-3m4 3V9m4 7V6"/></svg> Bilan par classe</button>
+  <button type="button" class="tab" role="tab" id="tab-school" aria-controls="school" aria-selected="false" tabindex="-1" data-tab="school">Paramètres de l’école</button>
+</div>
+
+<section id="eleves" class="panel on" role="tabpanel" aria-labelledby="tab-eleves">
+  <div class="page-head"><h2>Élèves</h2><p>Recherchez un élève, gérez les inscriptions ou importez une liste.</p></div>
+  <div class="bar filters">
+    <label class="f">Classe<select id="e-cls"></select></label>
+    <label class="f">Option<select id="e-opt"></select></label>
+    <label class="f">Recherche<input type="search" id="e-q" placeholder="Nom ou prénom"></label>
+    <button class="btn alt" id="e-reset">Réinitialiser les filtres</button>
+  </div>
+  <div class="tools" role="group" aria-label="Gestion des élèves et des cours">
+    <button type="button" class="btn" data-open-details="ajouter-eleve" aria-expanded="false" aria-controls="ajouter-eleve">Ajouter un élève</button>
+    <button type="button" class="btn alt" data-open-details="import-eleves" aria-expanded="false" aria-controls="import-eleves">Importer une liste</button>
+    <button type="button" class="btn alt" data-open-details="ajouter-cours" aria-expanded="false" aria-controls="ajouter-cours">Ajouter un cours</button>
+    <button type="button" class="btn alt" data-open-details="baremes" aria-expanded="false" aria-controls="baremes">Barèmes</button>
+    <button type="button" class="btn alt" data-open-details="ajouter-option" aria-expanded="false" aria-controls="ajouter-option">Ajouter une option</button>
+  </div>
+  <div class="details-stack">
+  <details id="ajouter-eleve">
+    <summary>Ajouter un élève</summary>
+    <div class="bar">
+      <label class="f">Nom et prénom<input type="text" id="n-nom" placeholder="MAMPUYA Jeancy"></label>
+      <label class="f">Classe<select id="n-cls"></select></label>
+      <label class="f">Option<select id="n-opt"></select></label>
+      <fieldset class="f cs"><legend>Cours (un ou plusieurs)</legend><div id="n-cours"></div></fieldset>
+      <label class="f">Sexe<select id="n-sexe"><option>M</option><option>F</option></select></label>
+      <button class="btn" id="n-add">Ajouter l'élève</button>
+    </div>
+  </details>
+  <details id="import-eleves">
+    <summary>Importer une liste d’élèves</summary>
+    <div class="bar">
+      <label class="f">Classe<select id="imp-cls"></select></label>
+      <label class="f">Option<select id="imp-opt"></select></label>
+      <label class="f">Fichier<input type="file" id="imp-file" accept=".pdf,.docx,.jpg,.jpeg,.png,.webp,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png,image/webp"></label>
+      <button class="btn alt" id="imp-read" type="button">Lire le fichier</button>
+    </div>
+    <p class="note">Formats pris en charge : PDF (y compris PDF numérisé), Word .docx et photos JPG, PNG ou WEBP. Les fichiers Word anciens .doc ne sont pas pris en charge. La lecture reconnaît automatiquement les deux présentations : nom complet dans une colonne, ou NOM et POST-NOM dans des colonnes séparées. Elle repère la colonne des élèves et lit le sexe F/M dans la colonne immédiatement à droite du bloc des noms. Vérifie les résultats avant importation. Si le fichier est illisible, colle directement les noms dans la zone ci-dessous.</p>
+    <label class="f" style="margin:10px 0 5px">NOM + POST-NOM détectés (format obligatoire : KAKESA MUDIMBA, un élève par ligne)<textarea id="imp-names" rows="8" style="width:100%;padding:9px;border:1px solid var(--line);border-radius:4px;font:inherit;color:var(--ink)" placeholder="KAKESA MUDIMBA&#10;KABONGO ILUNGA"></textarea></label>
+    <label class="f" style="margin:6px 0 5px">SEXE détecté (une lettre F ou M par ligne, dans le même ordre)<textarea id="imp-sexes" rows="4" style="width:100%;padding:9px;border:1px solid var(--line);border-radius:4px;font:inherit;color:var(--ink)" placeholder="M&#10;F"></textarea></label>
+    <div class="bar">
+      <fieldset class="f cs"><legend>Cours à attribuer</legend><div id="imp-cours"></div></fieldset>
+      <button class="btn" id="imp-add" type="button">Importer les élèves</button>
+    </div>
+    <p class="stat" id="imp-status" aria-live="polite"></p>
+  </details>
+  <details id="ajouter-cours">
+    <summary>Ajouter un cours à une option</summary>
+    <div class="bar">
+      <label class="f">Option<select id="k-opt"></select></label>
+      <label class="f">Nom du cours<input type="text" id="k-nom" placeholder="Géométrie dans l'espace" style="min-width:240px"></label>
+      <label class="f">Max par période<input type="number" id="k-mp" value="20" min="1" step="0.5" style="min-width:0;width:90px"></label>
+      <label class="f">Max examen<input type="number" id="k-mx" value="40" min="1" step="0.5" style="min-width:0;width:90px"></label>
+      <label class="f" style="flex-direction:row;align-items:center;gap:6px;font-weight:400;color:var(--ink)"><input type="checkbox" id="k-all" checked> Inscrire tous les élèves de cette option</label>
+      <button class="btn" id="k-add">Ajouter le cours</button>
+    </div>
+  </details>
+  <details id="baremes">
+    <summary>Barèmes par cours</summary>
+    <div class="bar"><label class="f">Option<select id="m-opt"></select></label></div>
+    <div class="tw" style="max-height:none"><table><thead><tr><th class="nm">Cours</th><th>Max par période</th><th>Max examen</th><th>Total annuel</th></tr></thead><tbody id="m-body"></tbody></table></div>
+    <p class="note">Les maximums se modifient directement dans les cases et s'enregistrent à la saisie. Ils s'appliquent à toutes les classes qui suivent ce cours.</p>
+  </details>
+  <details id="ajouter-option">
+    <summary>Ajouter une option</summary>
+    <div class="bar">
+      <label class="f">Nom de l'option<input type="text" id="o-nom" placeholder="Hôtellerie"></label>
+      <label class="f">Classe<select id="o-cls"><option>1ère</option><option>2ème</option><option>3ème</option><option>4ème</option></select></label>
+      <label class="f">Cours propres, séparés par une virgule<input type="text" id="o-cours" placeholder="Cuisine, Service en salle" style="min-width:260px"></label>
+      <button class="btn" id="o-add">Ajouter l'option</button>
+    </div>
+  </details>
+  </div>
+  <p class="stat" id="e-stat"></p>
+  <div class="tw" tabindex="0" role="region" aria-label="Tableau défilant"><table><thead><tr><th>N°</th><th class="nm">Nom des élèves</th><th>Sexe</th><th>Cours</th><th>Action</th></tr></thead><tbody id="e-body"></tbody></table></div>
+</section>
+
+<section id="cahier" class="panel" role="tabpanel" aria-labelledby="tab-cahier">
+  <div class="page-head"><h2>Cotations</h2><p>Choisissez un cours pour saisir les notes et consulter les totaux.</p></div>
+  <div class="bar filters">
+    <label class="f">Classe<select id="c-cls"></select></label>
+    <label class="f">Option<select id="c-opt"></select></label>
+    <label class="f">Cours<select id="c-br"></select></label>
+  </div>
+  <div class="actions">
+    <button class="btn alt" id="c-addc">Ajouter un cours</button>
+    <button class="btn alt" type="button" id="c-view-fiche">Voir la fiche</button>
+    <button class="btn" type="button" id="c-print-fiche">Imprimer la fiche</button>
+  </div>
+  <p class="stat"><b id="c-meta"></b></p>
+  <div class="tw" tabindex="0" role="region" aria-label="Tableau défilant"><table><thead id="c-head"></thead><tbody id="c-body"></tbody></table></div>
+  <p class="note" id="c-note"></p>
+</section>
+
+<section id="fiche" class="panel" role="tabpanel" aria-labelledby="tab-fiche">
+  <div class="page-head"><h2>Fiche de cotation</h2><p>Les élèves, les notes et les maximums sont repris automatiquement de l’onglet Cotations.</p></div>
+  <div class="bar filters">
+    <label class="f">Classe<select id="f-cls"></select></label>
+    <label class="f">Option<select id="f-opt"></select></label>
+    <label class="f">Cours<select id="f-br"></select></label>
+  </div>
+  <div class="actions">
+    <button type="button" class="btn alt" id="f-go-cahier">Retour aux cotations</button>
+    <button type="button" class="btn" id="f-print">Imprimer la fiche / Enregistrer en PDF</button>
+  </div>
+  <div class="fiche-scroll" id="fiche-pages" tabindex="0" role="region" aria-label="Aperçu de la fiche imprimable"></div>
+  <p class="note">Les colonnes de période montrent les moyennes du cahier. T.S = total du semestre. T.SE additionne les deux semestres ; T.GE reprend le même total annuel, car le cahier ne prévoit pas d’autre composante.</p>
+</section>
+
+<section id="school" class="panel" role="tabpanel" aria-labelledby="tab-school">
+  <div class="page-head"><h2>Paramètres de l’école</h2><p>Personnalisez l’en-tête de toutes les fiches. Les réglages sont conservés dans ce navigateur et inclus dans la sauvegarde JSON.</p></div>
+  <form id="school-form">
+    <div class="bar filters">
+      <label class="f">Pays<input type="text" id="school-pays" maxlength="110" required></label>
+      <label class="f">Ministère<input type="text" id="school-ministere" maxlength="125"></label>
+      <label class="f">Enseignement / Direction<input type="text" id="school-enseignement" maxlength="125"></label>
+      <label class="f">Ligne de province<input type="text" id="school-province" maxlength="100"></label>
+      <label class="f">Nom de l’établissement<input type="text" id="school-etablissement" maxlength="125" required></label>
+      <label class="f">Professeur par défaut<input type="text" id="school-prof" maxlength="90" placeholder="Nom du professeur"></label>
+      <label class="f">Année scolaire<input type="text" id="school-annee" maxlength="35" placeholder="Ex. : 2026–2027"></label>
+      <label class="f">Filigrane de la fiche<input type="text" id="school-filigrane" maxlength="28" placeholder="Laisser vide pour ne pas afficher de filigrane"></label>
+    </div>
+    <div class="actions"><button class="btn" type="submit">Enregistrer les paramètres</button></div>
+  </form>
+</section>
+
+<section id="presences" class="panel" role="tabpanel" aria-labelledby="tab-presences">
+  <div class="page-head"><h2>Présences</h2><p>Sélectionnez une séance, puis indiquez le statut de chaque élève.</p></div>
+  <div class="bar filters">
+    <label class="f">Classe<select id="a-cls"></select></label>
+    <label class="f">Option<select id="a-opt"></select></label>
+    <label class="f">Cours<select id="a-cours"></select></label>
+    <label class="f">Période<select id="a-per"><option value="1">1ère période</option><option value="2">2ème période</option><option value="3">3ème période</option><option value="4">4ème période</option></select></label>
+    <label class="f">Date de la séance<input type="date" id="a-date"></label>
+    <label class="f">Enseignant<input type="text" id="a-prof" placeholder="Nom de l'enseignant"></label>
+  </div>
+  <div class="actions">
+    <button class="btn alt" id="a-all">Marquer tous présents</button>
+    <button class="btn" id="a-transfer">Calculer et transférer la note</button>
+    <button class="btn alt" onclick="window.print()">Imprimer</button>
+  </div>
+  <p class="stat" id="a-meta"></p>
+  <div class="tw" tabindex="0" role="region" aria-label="Tableau défilant"><table><thead><tr><th>N°</th><th class="nm">Nom des élèves</th><th>Présence</th><th>Absence</th><th>Abs. justifiée</th><th>Retard</th><th>État du jour</th></tr></thead><tbody id="a-body"></tbody></table></div>
+  <p class="note">Légende : P = présent ; A = absent ; AJ = absence justifiée ; R = retard. Une absence justifiée est exclue du calcul. Un retard compte pour une demi-présence. La note est calculée proportionnellement au maximum du cours et de la période, puis transférée dans la colonne « Prés. » du cahier de cotation. Seules les séances enregistrées sont prises en compte.</p>
+</section>
+
+<section id="bilan" class="panel" role="tabpanel" aria-labelledby="tab-bilan">
+  <div class="page-head"><h2>Bilan par classe</h2><p>Consultez les résultats et les moyennes de la classe sélectionnée.</p></div>
+  <div class="bar filters">
+    <label class="f">Classe<select id="b-cls"></select></label>
+    <label class="f">Option<select id="b-opt"></select></label>
+  </div>
+  <div class="actions">
+    <button class="btn alt" id="b-csv">Exporter en CSV</button>
+  </div>
+  <div class="kpis">
+    <div class="k"><small>Effectif</small><strong id="k-eff">0</strong></div>
+    <div class="k"><small>Fiches avec notes</small><strong id="k-fic">0</strong></div>
+    <div class="k"><small>Moyenne du 1er semestre</small><strong id="k-s1">0.0</strong></div>
+    <div class="k"><small>Moyenne annuelle</small><strong id="k-an">0.0</strong></div>
+  </div>
+  <div class="tw" tabindex="0" role="region" aria-label="Tableau défilant"><table><thead><tr><th>Rang</th><th class="nm">Nom des élèves</th><th>Option</th><th>Cours</th><th>Moy. P1</th><th>Moy. P2</th><th>Exam. S1</th><th>Total S1</th><th>Moy. P3</th><th>Moy. P4</th><th>Exam. S2</th><th>Total S2</th><th>Total annuel</th><th>Sur</th></tr></thead><tbody id="b-body"></tbody></table></div>
+</section>
+
+<footer>
+  <span>Données enregistrées dans ce navigateur.</span>
+  <button class="btn alt" id="bk-out">Sauvegarder les données (JSON)</button>
+  <button class="btn alt" id="bk-in">Restaurer une sauvegarde</button>
+  <input type="file" id="bk-file" accept="application/json" hidden>
+</footer>
+</main>
+<div id="toast" role="status"></div>
+<dialog id="rename-dialog" aria-labelledby="rename-title">
+  <form id="rename-form">
+    <h2 id="rename-title">Modifier le nom de l’élève</h2>
+    <label class="f">Nom et post-noms<input type="text" id="rename-name" required autofocus></label>
+    <div class="actions"><button class="btn" type="submit">Enregistrer</button><button class="btn alt" type="button" id="rename-cancel">Annuler</button></div>
+  </form>
+</dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script>
+const KEY="cahier_cotation_v7_data";
+const CL=["7ème","8ème","1ère","2ème","3ème","4ème"];
+const SEC=["Commercial","Scientifique","Coupe","Sociale","Pédagogique","Électricité","Mécanique"];
+const EB="Éducation de base";
+const BASE={"7ème":[EB],"8ème":[EB],"1ère":SEC,"2ème":SEC,"3ème":SEC,"4ème":SEC};
+const COURS={[EB]:["Algèbre","Géométrie","Statistiques","Arithmétique"],
+"Commercial":["Comptabilité","Fiscalité","Mathématiques Financières","Comptabilité Générale","Comptabilité Analytique"],
+"Scientifique":["Mathématiques approfondies","Physique","Chimie","Biologie"],
+"Coupe":["Coupe et couture","Patronage"],
+"Sociale":["Économie sociale","Statistiques sociales","Législation sociale"],
+"Pédagogique":["Psychopédagogie","Didactique générale","Déontologie"],
+"Électricité":["Électricité générale","Schémas électriques","Électrotechnique"],
+"Mécanique":["Mécanique appliquée","Technologie mécanique","Dessin technique"]};
+const SEQ=[{p:1},{p:2},{x:1},{p:3},{p:4},{x:2}];
+const FIELDS=["ie1","ie2","d","pres"];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const SCHOOL_DEFAULT={pays:"RÉPUBLIQUE DÉMOCRATIQUE DU CONGO",ministere:"MINISTÈRE DE L’ÉDUCATION NATIONALE",enseignement:"ENSEIGNEMENT PRIMAIRE, SECONDAIRE ET TECHNIQUE",province:"PROVINCE DU MANIEMA",etablissement:"COMPLEXE SCOLAIRE TUUNGANE",prof:"",annee:"",filigrane:"C.S. TUUNGANE"};
+const fresh=()=>({school:{...SCHOOL_DEFAULT},eleves:[],customOptions:{"1ère":[],"2ème":[],"3ème":[],"4ème":[]},customCoursByOption:{},notes:{},maxima:{},presences:{},presenceTeachers:{}});
+let state=fresh();
+
+function load(){
+  try{const r=localStorage.getItem(KEY);if(r){const p=JSON.parse(r);if(p&&Array.isArray(p.eleves)){state=Object.assign(fresh(),p);state.eleves=sortEl(state.eleves);}}}catch(e){}
+}
+function save(){try{const ordered={...state,eleves:sortEl(state.eleves)};localStorage.setItem(KEY,JSON.stringify(ordered));state.eleves=ordered.eleves;return true;}catch(e){toast("Enregistrement impossible dans ce navigateur.");return false;}}
+let tt;function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2200);}
+
+const optsFor=c=>[...new Set([...(BASE[c]||[]),...((state.customOptions||{})[c]||[])])];
+const coursFor=o=>{const m=[...new Set([...(COURS[o]||[]),...((state.customCoursByOption||{})[o]||[])])];return m.length?m:["Cours propre"];};
+const allOpts=()=>[...new Set(CL.flatMap(optsFor))].sort((a,b)=>a.localeCompare(b,"fr"));
+function fill(sel,list,keep,all){
+  const cur=keep?sel.value:"";
+  sel.innerHTML=(all?`<option value="ALL">${all}</option>`:"")+list.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join("");
+  if(cur&&[...sel.options].some(o=>o.value===cur))sel.value=cur;
+}
+const byClass=(a,b)=>CL.indexOf(a)-CL.indexOf(b);
+const sortEl=l=>[...l].sort((a,b)=>byClass(a.classe,b.classe)||a.option.localeCompare(b.option,"fr")||a.nom.localeCompare(b.nom,"fr",{sensitivity:"base"}));
+
+/* Onglets */
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===b));
+  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("on",p.id===b.dataset.tab));
+  document.body.classList.toggle("fiche-print",b.dataset.tab==="fiche");
+  ({eleves:renderEleves,cahier:renderCahier,bilan:renderBilan,presences:renderPresences,fiche:syncFiche,school:renderSchool})[b.dataset.tab]();
+});
+
+/* Élèves */
+function renderEleves(){
+  const cls=$("e-cls").value,opt=$("e-opt").value,q=$("e-q").value.trim().toLowerCase();
+  const list=sortEl(state.eleves.filter(e=>(cls==="ALL"||e.classe===cls)&&(opt==="ALL"||e.option===opt)&&(!q||e.nom.toLowerCase().includes(q)||e.cours.toLowerCase().includes(q))));
+  const f=list.filter(e=>e.sexe==="F").length;
+  $("e-stat").innerHTML=`<b>${list.length}</b> élève${list.length>1?"s":""}, dont <b>${f}</b> fille${f>1?"s":""} et <b>${list.length-f}</b> garçon${list.length-f>1?"s":""}.`;
+  const tb=$("e-body");
+  if(!list.length){tb.innerHTML=`<tr><td colspan="5" class="empty">Aucun élève pour ce filtre. Ouvrez « Ajouter un élève » pour commencer la liste.</td></tr>`;return;}
+  let last="",n=0,h="";
+  list.forEach(e=>{
+    const g=`${e.classe} : ${e.option}`;
+    if(g!==last){last=g;n=0;h+=`<tr class="grp"><td colspan="5">${esc(g)}</td></tr>`;}
+    h+=`<tr><td>${++n}</td><td class="nm">${esc(e.nom)}</td><td>${e.sexe}</td><td>${esc(e.cours)}</td><td><span class="student-actions"><button type="button" class="btn alt rename" data-rename="${esc(e.id)}">Modifier le nom</button><button type="button" class="btn del" data-del="${esc(e.id)}">Supprimer</button></span></td></tr>`;
+  });
+  tb.innerHTML=h;
+}
+$("e-body").onclick=ev=>{
+  const edit=ev.target.closest("[data-rename]");
+  if(edit){openRename(edit.dataset.rename);return;}
+  const id=ev.target.dataset.del;if(!id)return;
+  const e=state.eleves.find(x=>String(x.id)===id);
+  if(!e||!confirm(`Supprimer ${e.nom} et toutes ses notes ?`))return;
+  state.eleves=state.eleves.filter(x=>x!==e);
+  Object.keys(state.notes).forEach(k=>{if(k.endsWith("||"+id))delete state.notes[k];});
+  save();renderEleves();toast("Élève supprimé.");
+};
+let renameId=null;
+const renameInput=$("rename-name"),renameDialog=$("rename-dialog");
+function openRename(id){
+  const e=state.eleves.find(x=>String(x.id)===id);
+  if(!e)return;
+  renameId=id;renameInput.value=e.nom;renameInput.setCustomValidity("");
+  renameDialog.showModal();renameInput.select();
+}
+renameInput.oninput=()=>renameInput.setCustomValidity("");
+$("rename-cancel").onclick=()=>renameDialog.close();
+$("rename-form").onsubmit=ev=>{
+  ev.preventDefault();
+  const e=state.eleves.find(x=>String(x.id)===renameId);
+  if(!e){renameDialog.close();return;}
+  const nom=renameInput.value.trim().replace(/\s+/g," ");
+  const dup=state.eleves.some(x=>x!==e&&x.classe===e.classe&&x.option===e.option&&x.nom.toLowerCase()===nom.toLowerCase());
+  if(!nom||dup){renameInput.setCustomValidity(dup?"Cet élève existe déjà dans cette option.":"Saisissez le nom de l’élève.");renameInput.reportValidity();return;}
+  const previous=e.nom;e.nom=nom;
+  if(!save()){e.nom=previous;return;}
+  renameDialog.close();renderEleves();toast("Nom de l’élève modifié.");
+  [...$("e-body").querySelectorAll("[data-rename]")].find(x=>x.dataset.rename===renameId)?.focus();
+};
+["e-cls","e-opt"].forEach(i=>$(i).onchange=renderEleves);
+$("e-q").oninput=renderEleves;
+$("e-reset").onclick=()=>{$("e-cls").value="ALL";$("e-opt").value="ALL";$("e-q").value="";renderEleves();};
+
+function syncAdd(){fill($("n-opt"),optsFor($("n-cls").value),true);syncAddCours();}
+function syncAddCours(){
+  const l=coursFor($("n-opt").value);
+  $("n-cours").innerHTML=`<label><input type="checkbox" id="n-all"> <b>Tous les cours</b></label>`+l.map(c=>`<label><input type="checkbox" class="nc" value="${esc(c)}"${l.length===1?" checked":""}> ${esc(c)}</label>`).join("");
+}
+$("n-cours").onchange=ev=>{
+  const cs=[...document.querySelectorAll("#n-cours .nc")];
+  if(ev.target.id==="n-all")cs.forEach(c=>c.checked=ev.target.checked);
+  else $("n-all").checked=cs.every(c=>c.checked);
+};
+function addCours(o,nom,enroll,mp,mx){
+  nom=nom.trim().replace(/\s+/g," ").replace(/,/g," ");
+  if(!nom){toast("Saisissez le nom du cours.");return null;}
+  if(coursFor(o).some(c=>c.toLowerCase()===nom.toLowerCase())){toast("Ce cours existe déjà dans cette option.");return null;}
+  (state.customCoursByOption[o]=state.customCoursByOption[o]||[]).push(nom);
+  if(mp>0||mx>0)state.maxima[o+"||"+nom]={p:mp>0?mp:20,x:mx>0?mx:2*(mp>0?mp:20)};
+  if(enroll)state.eleves.forEach(e=>{if(e.option===o&&!e.cours.split(", ").includes(nom))e.cours+=", "+nom;});
+  save();syncAddCours();renderEleves();renderMax();
+  if($("c-opt").value===o){syncCC();$("c-br").value=nom;renderCahier();}
+  return nom;
+}
+$("k-mp").oninput=()=>{const v=parseFloat($("k-mp").value);if(v>0)$("k-mx").value=2*v;};
+$("k-add").onclick=()=>{
+  const o=$("k-opt").value,n=addCours(o,$("k-nom").value,$("k-all").checked,parseFloat($("k-mp").value),parseFloat($("k-mx").value));
+  if(n){$("k-nom").value="";toast(`Cours ${n} ajouté à l'option ${o}.`);}
+};
+$("c-addc").onclick=()=>{
+  const o=$("c-opt").value,nom=prompt(`Nom du nouveau cours pour l'option ${o} :`);
+  if(!nom)return;
+  const n=addCours(o,nom,confirm("Inscrire tous les élèves de cette option à ce cours ?"));
+  if(n)toast(`Cours ${n} ajouté.`);
+};
+const hasCours=(e,b)=>e.cours.split(", ").includes(b);
+$("n-cls").onchange=syncAdd;$("n-opt").onchange=syncAddCours;
+$("n-add").onclick=()=>{
+  const nom=$("n-nom").value.trim().replace(/\s+/g," ");
+  if(!nom){toast("Saisissez le nom de l'élève.");$("n-nom").focus();return;}
+  const classe=$("n-cls").value,option=$("n-opt").value;
+  const cours=[...document.querySelectorAll("#n-cours .nc:checked")].map(x=>x.value).join(", ");
+  if(!cours){toast("Cochez au moins un cours.");return;}
+  const dup=state.eleves.some(e=>e.classe===classe&&e.option===option&&e.nom.toLowerCase()===nom.toLowerCase());
+  if(dup){toast("Cet élève existe déjà dans cette option.");return;}
+  const id=state.eleves.reduce((m,x)=>Math.max(m,x.id),0)+1;
+  state.eleves.push({id,classe,option,cours,nom,sexe:$("n-sexe").value});
+  save();$("n-nom").value="";$("n-nom").focus();renderEleves();toast(`${nom} ajouté.`);
+};
+$("o-add").onclick=()=>{
+  const nom=$("o-nom").value.trim(),cls=$("o-cls").value;
+  if(!nom){toast("Saisissez le nom de l'option.");return;}
+  const co=$("o-cours").value.split(",").map(s=>s.trim()).filter(Boolean);
+  if(!state.customOptions[cls])state.customOptions[cls]=[];
+  if(!optsFor(cls).includes(nom))state.customOptions[cls].push(nom);
+  const cur=state.customCoursByOption[nom]||[];
+  state.customCoursByOption[nom]=[...new Set([...cur,...(co.length?co:(COURS[nom]?[]:[`Cours de ${nom}`]))])];
+  save();$("o-nom").value="";$("o-cours").value="";refreshFilters();syncAdd();syncImport();renderMax();toast(`Option ${nom} ajoutée en ${cls}.`);
+};
+
+/* Importation des listes d'élèves */
+function syncImport(){
+  fill($('imp-opt'),optsFor($('imp-cls').value),true);
+  const list=coursFor($('imp-opt').value);
+  $('imp-cours').innerHTML=list.map(c=>`<label><input type="checkbox" class="imp-course" value="${esc(c)}" checked> ${esc(c)}</label>`).join('');
+}
+$('imp-cls').onchange=syncImport;
+$('imp-opt').onchange=syncImport;
+const importNorm=s=>String(s??'').toLocaleLowerCase('fr').normalize('NFD').replace(/\p{M}/gu,'').replace(/[^a-z0-9]+/g,' ').trim();
+const importSex=s=>/^[FM]$/i.test(String(s??'').trim())?String(s).trim().toUpperCase():'';
+const nameWord=/^\p{L}[\p{L}\p{M}]*(?:['’\-]\p{L}[\p{L}\p{M}]*)*$/u;
+const nameWords=s=>String(s??'').trim().normalize('NFC').split(/\s+/).filter(Boolean);
+function importHeader(cells){
+  const h=cells.map(importNorm);
+  // Reconnaissance tolérante aux erreurs OCR : NOM ET POSTF, NOM ET POSTE, etc.
+  const editDistance=(a,b)=>{
+    const row=Array.from({length:b.length+1},(_,i)=>i);
+    for(let i=1;i<=a.length;i++){
+      let prev=row[0];row[0]=i;
+      for(let j=1;j<=b.length;j++){
+        const old=row[j];row[j]=Math.min(row[j]+1,row[j-1]+1,prev+(a[i-1]===b[j-1]?0:1));prev=old;
+      }
+    }
+    return row[b.length];
+  };
+  const near=(value,aliases,max=1)=>aliases.some(alias=>value===alias||
+    (value.length>=alias.length-1&&value.length<=alias.length+1&&editDistance(value,alias)<=max));
+  const nameAliases=['nom','noms','nom complet','noms complets','nom et poste','noms et poste',
+    'nom et post nom','noms et post nom','nom et postnom','noms et postnom',
+    'nom et prenom','noms et prenom','nom et prenoms','noms et prenoms',
+    'nom et post nom et prenom','nom des eleves','nom de l eleve','identite de l eleve','eleve','eleves'];
+  const ni=h.findIndex(x=>near(x,nameAliases,1));
+  const pi=h.findIndex(x=>near(x,['post nom','post noms','postnom','postnoms'],1));
+  const si=h.findIndex(x=>near(x,['sexe','genre'],1));
+  const any=ni>=0||pi>=0||si>=0;
+  const other=h.filter(x=>/^(?:prenoms?|matricule|numero|ordre|n|age|adresse)$/.test(x)).length;
+  const filled=h.filter(Boolean).length;
+  return {ni,pi,si,isHeader:any&&(ni>=0||filled===1||other>0||pi>=0&&si>=0)};
+}
+function cleanImportedRows(input){
+  const rows=(Array.isArray(input)?input:String(input??'').split(/\r\n?|\n/)).map(row=>{
+    if(Array.isArray(row))return row.map(x=>String(x??'').trim());
+    const line=row.trim();
+    if(row.includes('\t'))return row.split('\t').map(x=>x.trim());
+    if(/[;|]/.test(line))return line.split(/[;|]/).map(x=>x.trim());
+    return line.split(/\s{2,}/).map(x=>x.trim());
+  }).filter(row=>row.some(Boolean));
+  const out=[];
+  const heading=/^(?:liste|republique|ministere|annee|ecole|institut|complexe|college|lycee|classe|option|effectif|total|page|province|direction|adresse|signature|observation|coordination|fichier|rapport|document|section)(?: |$)/;
+  const headWord=/^(?:noms?|post ?noms?|prenoms?|sexe|genre|matricule|numero|ordre|age|adresse)$/;
+  const validWord=w=>!!w&&nameWord.test(w)&&[...w].filter(c=>/\p{L}/u.test(c)).length>=2&&!headWord.test(importNorm(w));
+  const add=(a,b,sex)=>{if(validWord(a)&&validWord(b))out.push({nom:`${a} ${b}`.toLocaleUpperCase('fr'),sexe:importSex(sex)});};
+  const tryRow=(cells,header)=>{
+    if(header&&cells.length>1){
+      const first=nameWords(cells[header.ni]),post=header.pi>=0?nameWords(cells[header.pi]):first.slice(1);
+      if(validWord(first[0])&&validWord(post[0])&&!heading.test(importNorm(cells[header.ni]))){
+        add(first[0],post[0],cells[header.si>=0?header.si:Math.max(header.ni,header.pi)+1]);return;
+      }
+      // Si une ligne OCR a perdu ses séparateurs, ne décaler pas les colonnes suivantes.
+      if(cells.filter(Boolean).length>1)return;
+    }
+    const values=cells.map(v=>v.replace(/^\s*(?:\d+\s*[.)\-:]\s*|\d+\s+|[•*]\s*)/,'').trim()).filter(Boolean);
+    if(!values.length||heading.test(importNorm(values[0])))return;
+    if(values.length===1){
+      const words=nameWords(values[0].replace(/\s*[,;]+\s*/g,' '));
+      const sex=words.length>2?importSex(words[words.length-1]):'';
+      if(sex)words.pop();
+      if(words.every(w=>nameWord.test(w))&&words.length<=4)add(words[0],words[1],sex);
+      return;
+    }
+    const start=values.findIndex(v=>nameWords(v).every(validWord));
+    if(start<0)return;
+    const first=nameWords(values[start]),second=nameWords(values[start+1]);
+    if(first.length>=2){add(first[0],first[1],values[start+1]);return;}
+    if(second.length&&second.every(validWord)){
+      const next=values[start+2],later=values[start+3];
+      add(first[0],second[0],importSex(next)||(!header&&nameWords(next).every(validWord)?importSex(later):''));
+    }
+  };
+  const hasHeader=rows.some(c=>{const h=importHeader(c);return h.isHeader&&h.ni>=0;});
+  let header=null;
+  for(const cells of rows){
+    const h=importHeader(cells);
+    if(h.isHeader){if(h.ni>=0)header=h;continue;}
+    if(!hasHeader||header)tryRow(cells,header);
+  }
+  return out;
+}
+async function recognizeImportImage(image){
+  if(!window.Tesseract)throw new Error('Le moteur de reconnaissance d’image n’a pas pu être chargé. Vérifie la connexion Internet ou colle les noms manuellement.');
+  const result=await Tesseract.recognize(image,'fra');
+  return result.data.text;
+}
+function pdfImportRows(items){
+  const positioned=items.filter(item=>item.transform&&item.str?.trim()).map(item=>({text:item.str.trim(),x:item.transform[4],y:item.transform[5],size:Math.abs(item.height)||10,width:item.width||0}));
+  positioned.sort((a,b)=>b.y-a.y||a.x-b.x);
+  const lines=[];
+  for(const item of positioned){
+    const line=lines[lines.length-1];
+    if(line&&Math.abs(line.y-item.y)<=Math.min(3,item.size*0.32)){line.items.push(item);}
+    else lines.push({y:item.y,items:[item]});
+  }
+  const group=items=>{
+    const cells=[];
+    for(const item of items){
+      const previous=cells[cells.length-1];
+      if(previous&&item.x-previous.end<=Math.max(5,item.size*0.72)){
+        previous.text+=' '+item.text;previous.end=Math.max(previous.end,item.x+item.width);
+      }else cells.push({text:item.text,x:item.x,end:item.x+item.width,size:item.size});
+    }
+    return cells;
+  };
+  let columns=null;
+  return lines.map(line=>{
+    line.items.sort((a,b)=>a.x-b.x);
+    const cells=group(line.items), texts=cells.map(c=>c.text);
+    const h=importHeader(texts);
+    if(cells.length>1&&h.isHeader&&h.ni>=0){columns=cells;return texts;}
+    if(!columns||cells.some(c=>c.x<columns[0].x-c.size*2))return texts;
+    const aligned=columns.map(()=>[]);
+    for(const cell of cells){
+      let j=0;
+      while(j+1<columns.length&&cell.x>=columns[j+1].x-Math.max(8,cell.size))j++;
+      aligned[j].push(cell.text);
+    }
+    return aligned.map(c=>c.join(' '));
+  });
+}
+async function extractPdf(file){
+  if(!window.pdfjsLib)throw new Error('Le lecteur PDF n’a pas pu être chargé. Vérifie la connexion Internet ou colle les noms manuellement.');
+  pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer(),isEvalSupported:false}).promise;
+  const out=[];
+  let warning='';
+  try{
+    for(let i=1;i<=pdf.numPages;i++){
+      $('imp-status').textContent=`Lecture du PDF : page ${i}/${pdf.numPages}…`;
+      const page=await pdf.getPage(i),content=await page.getTextContent();
+      const rows=pdfImportRows(content.items);
+      let detected=cleanImportedRows(rows);
+      if(!detected.length){
+        try{
+          const vp=page.getViewport({scale:2}),canvas=document.createElement('canvas');canvas.width=vp.width;canvas.height=vp.height;
+          await page.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;
+          detected=cleanImportedRows(await recognizeImportImage(canvas));
+        }catch(err){warning=`Reconnaissance impossible sur une ou plusieurs pages : ${err.message||'erreur de lecture'}`;}
+      }
+      out.push(...detected);
+    }
+  }finally{await pdf.destroy();}
+  return {rows:out,warning};
+}
+async function extractDocx(file){
+  if(!window.mammoth)throw new Error('Le lecteur Word n’a pas pu être chargé. Vérifie la connexion Internet ou colle les noms manuellement.');
+  const result=await mammoth.convertToHtml({arrayBuffer:await file.arrayBuffer()},{convertImage:mammoth.images.imgElement(()=>Promise.resolve({}))});
+  const template=document.createElement('template');
+  template.innerHTML=result.value; // inert: never insert imported HTML into the page
+  const tables=[];
+  const paragraphs=[];
+  for(const node of template.content.querySelectorAll('table,p,li')){
+    if(node.matches('table')&&!node.parentElement?.closest('table')){
+      const rows=Array.from(node.rows,row=>Array.from(row.cells,cell=>{
+        const parts=Array.from(cell.querySelectorAll('p'));
+        return parts.length?parts.map(p=>p.textContent).join(' '):cell.textContent;
+      }));
+      const detected=cleanImportedRows(rows);
+      if(detected.length)tables.push(...detected);
+    }else if(!node.closest('table')&&(!node.matches('p')||!node.closest('li'))){
+      paragraphs.push(node.textContent);
+    }
+  }
+  return tables.length?tables:cleanImportedRows(paragraphs);
+}
+$('imp-read').onclick=async()=>{
+  const file=$('imp-file').files[0];
+  if(!file){$('imp-status').textContent='Choisis d’abord un fichier ou colle les noms manuellement.';return;}
+  $('imp-status').textContent='Lecture du fichier en cours…';
+  for(const id of ['imp-read','imp-add','imp-file','imp-names','imp-sexes'])$(id).disabled=true;
+  try{
+    const name=file.name.toLowerCase();let rows=[],warning='';
+    if(name.endsWith('.pdf')||file.type==='application/pdf')({rows,warning}=await extractPdf(file));
+    else if(name.endsWith('.docx'))rows=await extractDocx(file);
+    else if(name.endsWith('.doc'))throw new Error('Le format .doc ancien n’est pas pris en charge. Enregistre le document en .docx ou PDF.');
+    else if(/\.(jpe?g|png|webp)$/i.test(name)||/^image\/(jpeg|png|webp)$/.test(file.type)){
+      $('imp-status').textContent='Reconnaissance des noms sur la photo…';
+      rows=cleanImportedRows(await recognizeImportImage(file));
+    }else throw new Error('Format non reconnu. Utilise un PDF, un fichier Word .docx ou une photo JPG, PNG ou WEBP.');
+    if(!rows.length)throw new Error(warning||'Aucun nom reconnu. Vérifie le document ou colle les noms manuellement.');
+    $('imp-names').value=rows.map(r=>r.nom).join('\n');
+    $('imp-sexes').value=rows.map(r=>r.sexe||'').join('\n');
+    const detected=rows.filter(r=>r.sexe).length;
+    $('imp-status').textContent=`${rows.length} ligne(s) reconnue(s), ${detected} sexe(s) détecté(s). Vérifie l’aperçu, puis clique sur « Importer les élèves ».`+(warning?' '+warning:'');
+  }catch(err){$('imp-status').textContent=(err.message||'Erreur pendant la lecture du fichier.')+($('imp-names').value.trim()?' L’aperçu précédent n’a pas été modifié.':'');}
+  finally{for(const id of ['imp-read','imp-add','imp-file','imp-names','imp-sexes'])$(id).disabled=false;}
+};
+$('imp-add').onclick=()=>{
+  try{
+    const classe=$('imp-cls').value,option=$('imp-opt').value;
+    const courses=[...document.querySelectorAll('.imp-course:checked')].map(x=>x.value).join(', ');
+    const rawNames=$('imp-names').value.split(/\r?\n/).map(x=>x.trim().replace(/\s+/g,' ').toLocaleUpperCase('fr'));
+    const sexes=$('imp-sexes').value.split(/\r?\n/).map(x=>x.trim().toUpperCase());
+    const valid=[],invalid=[],missingSex=[];
+    rawNames.forEach((nom,index)=>{
+      if(!nom)return;
+      if(/^[\p{L}'’-]+ [\p{L}'’-]+$/u.test(nom)){
+        const sexe=sexes[index]||'';
+        if(!/^[FM]$/.test(sexe)){missingSex.push(index+1);return;}
+        valid.push({nom,sexe,index});
+      } else invalid.push(nom);
+    });
+    if(!classe||!option){$('imp-status').textContent='Importation impossible : sélectionne une classe et une option.';return;}
+    if(missingSex.length){$('imp-status').textContent=`Importation bloquée : sexe manquant ou incorrect pour la/les ligne(s) ${missingSex.join(', ')}. Saisis F ou M dans « SEXE détecté » à la ligne correspondante, puis recommence.`;return;}
+    if(!valid.length){$('imp-status').textContent='Aucun nom valide. Chaque ligne doit contenir exactement NOM + POST-NOM, par exemple : KAKESA MUDIMBA.';return;}
+    if(!courses){$('imp-status').textContent='Importation impossible : sélectionne au moins un cours.';return;}
+    let added=0,duplicates=0;
+    const previousLength=state.eleves.length;
+    let nextId=state.eleves.reduce((m,x)=>Math.max(m,Number(x.id)||0),0)+1;
+    valid.forEach(({nom,sexe})=>{
+      if(state.eleves.some(e=>e.classe===classe&&e.option===option&&String(e.nom||'').toLocaleLowerCase('fr')===nom.toLocaleLowerCase('fr'))){duplicates++;return;}
+      state.eleves.push({id:nextId++,classe,option,cours:courses,nom,sexe});added++;
+    });
+    if(added&&!save()){
+      state.eleves.length=previousLength;
+      $('imp-status').textContent='Importation annulée : ce navigateur ne permet pas d’enregistrer les données. Essaie dans une fenêtre normale du navigateur.';return;
+    }
+    $('e-cls').value=classe;$('e-opt').value=option;$('e-q').value='';
+    renderEleves();renderPresences();
+    const extra=invalid.length?` ${invalid.length} ligne(s) ignorée(s) car le format n'est pas NOM + POST-NOM.`:'';
+    $('imp-status').textContent=`Importation terminée : ${added} élève(s) ajouté(s), ${duplicates} doublon(s) ignoré(s).`+extra;
+    toast(`${added} élève(s) importé(s).`);
+  }catch(err){
+    console.error('Erreur importation élèves:',err);
+    $('imp-status').textContent='Échec de l’importation : '+(err?.message||'erreur inconnue')+'. Aucun résultat confirmé.';
+  }
+};
+
+/* Maximums des cours */
+function renderMax(){
+  const o=$("m-opt").value;if(!o){$("m-body").innerHTML="";return;}
+  $("m-body").innerHTML=coursFor(o).map(b=>{const M=getMax(o,b);
+    return `<tr><td class="nm">${esc(b)}</td><td><input class="n" type="number" min="1" step="0.5" value="${M.p}" data-b="${esc(b)}" data-k="p"></td><td><input class="n" type="number" min="1" step="0.5" value="${M.x}" data-b="${esc(b)}" data-k="x"></td><td class="t">${2*(2*M.p+M.x)}</td></tr>`;}).join("");
+}
+$("m-body").oninput=ev=>{
+  const i=ev.target,v=parseFloat(i.value);if(!i.dataset.k||!(v>0))return;
+  const o=$("m-opt").value,b=i.dataset.b,k=state.maxima[o+"||"+b]=Object.assign(getMax(o,b),{});
+  k[i.dataset.k]=v;
+  if(i.dataset.k==="p"){k.x=2*v;i.closest("tr").querySelector('[data-k="x"]').value=k.x;}
+  save();
+  i.closest("tr").lastElementChild.textContent=2*(2*k.p+k.x);
+};
+$("m-opt").onchange=renderMax;
+
+/* Cahier */
+const getMax=(o,b)=>{const m=(state.maxima||{})[o+"||"+b]||{};const p=m.p>0?m.p:20;return {p,x:m.x>0?m.x:2*p};};
+const readNote=(c,o,b,id)=>state.notes[`${c}||${o}||${b}||${id}`]||{};
+function writeNote(c,o,b,id,f,v){const k=`${c}||${o}||${b}||${id}`;(state.notes[k]=state.notes[k]||{})[f]=v;}
+const num=v=>{if(v===""||v==null)return null;const n=parseFloat(v);return isNaN(n)?null:n;};
+function moy(n,p){const v=FIELDS.map(f=>num(n[`p${p}_${f}`])).filter(x=>x!==null);return v.length?v.reduce((a,b)=>a+b,0)/v.length:0;}
+function compute(n){
+  const m1=moy(n,1),m2=moy(n,2),m3=moy(n,3),m4=moy(n,4),e1=num(n.ex1)||0,e2=num(n.ex2)||0;
+  const s1=m1+m2+e1,s2=m3+m4+e2;
+  return {m1,m2,m3,m4,e1,e2,s1,s2,an:s1+s2};
+}
+const hasData=n=>Object.values(n).some(v=>v!==""&&v!=null);
+function head(){
+  let a=`<tr><th rowspan="2">N°</th><th class="nm" rowspan="2">Nom des élèves</th>`,b="<tr>";
+  SEQ.forEach(s=>{
+    if(s.p){a+=`<th class="p${s.p%2?1:2}" colspan="5">${s.p}${s.p===1?"ère":"ème"} période</th>`;b+=["IE1","IE2","D","Prés."].map(t=>`<th class="p${s.p%2?1:2}">${t}</th>`).join("")+`<th class="t">Moy. P${s.p}</th>`;}
+    else{a+=`<th class="x" colspan="2">Examen S${s.x}</th>`;b+=`<th class="x">Note</th><th class="t">Total S${s.x}</th>`;}
+  });
+  $("c-head").innerHTML=a+`<th class="t" rowspan="2">Total annuel</th></tr>`+b+"</tr>";
+}
+function renderCahier(){
+  const c=$("c-cls").value,o=$("c-opt").value,b=$("c-br").value,M=getMax(o,b),sur=2*(2*M.p+M.x);
+  $("c-meta").textContent=`${c} : ${o} : ${b}`;
+  $("c-note").textContent=`Chaque période compte quatre notes sur ${M.p} (IE1, IE2, D, Présence) et sa moyenne. Total semestre = moyenne de la période 1 + moyenne de la période 2 + examen sur ${M.x} (le double d'une période par défaut). Total annuel = semestre 1 + semestre 2, sur ${sur}. Un total sous ${sur/2} s'affiche en rouge. Les maximums se règlent dans l'onglet Élèves.`;
+  const st=sortEl(state.eleves.filter(e=>e.classe===c&&e.option===o&&hasCours(e,b)));
+  const tb=$("c-body");
+  if(!st.length){tb.innerHTML=`<tr><td colspan="29" class="empty">Aucun élève inscrit à ce cours. Ajoutez-les ou cochez ce cours dans l'onglet Élèves.</td></tr>`;return;}
+  const inp=(f,v,max)=>`<td${f.startsWith("ex")?' class="xm"':""}><input class="n" type="number" step="0.5" min="0" max="${max}" value="${esc(v??"")}" data-f="${f}" aria-label="${f}"></td>`;
+  tb.innerHTML=st.map((e,i)=>{
+    const n=readNote(c,o,b,e.id);let t=`<tr data-id="${e.id}"><td>${i+1}</td><td class="nm">${esc(e.nom)}</td>`;
+    SEQ.forEach(s=>{
+      if(s.p){FIELDS.forEach(f=>t+=inp(`p${s.p}_${f}`,n[`p${s.p}_${f}`],M.p));t+=`<td class="t" data-c="m${s.p}"></td>`;}
+      else t+=inp(`ex${s.x}`,n[`ex${s.x}`],M.x)+`<td class="t" data-c="s${s.x}"></td>`;
+    });
+    return t+`<td class="t" data-c="an"></td></tr>`;
+  }).join("");
+  tb.querySelectorAll("tr").forEach(tr=>paint(tr,readNote(c,o,b,tr.dataset.id)));
+}
+function paint(tr,n){
+  const r=compute(n);
+  tr.querySelectorAll("[data-c]").forEach(td=>{td.textContent=r[td.dataset.c].toFixed(1);});
+  const M=getMax($("c-opt").value,$("c-br").value),th=2*M.p+M.x,an=tr.querySelector('[data-c="an"]');an.classList.toggle("bad",r.an<th&&hasData(n));an.classList.toggle("ok",r.an>=th&&hasData(n));
+}
+$("c-body").oninput=ev=>{
+  const i=ev.target;if(!i.dataset.f)return;
+  const max=parseFloat(i.max);let v=i.value;
+  if(v!==""&&parseFloat(v)>max){v=String(max);i.value=v;toast(`La note maximale est ${max}.`);}
+  if(v!==""&&parseFloat(v)<0){v="0";i.value=v;}
+  const tr=i.closest("tr");
+  writeNote($("c-cls").value,$("c-opt").value,$("c-br").value,tr.dataset.id,i.dataset.f,v);
+  paint(tr,readNote($("c-cls").value,$("c-opt").value,$("c-br").value,tr.dataset.id));
+};
+$("c-body").onchange=save;
+function syncC(){fill($("c-opt"),optsFor($("c-cls").value),true);syncCC();}
+function syncCC(){fill($("c-br"),coursFor($("c-opt").value),true);renderCahier();}
+$("c-cls").onchange=syncC;$("c-opt").onchange=syncCC;$("c-br").onchange=renderCahier;
+
+/* Paramètres de l’école et fiche imprimable */
+const schoolSettings=()=>({...SCHOOL_DEFAULT,...state.school});
+function renderSchool(){
+  const school=schoolSettings();
+  Object.keys(SCHOOL_DEFAULT).forEach(k=>{$("school-"+k).value=school[k]??"";});
+}
+$("school-form").onsubmit=ev=>{
+  ev.preventDefault();
+  const next=Object.fromEntries(Object.keys(SCHOOL_DEFAULT).map(k=>[k,$("school-"+k).value.trim()]));
+  if(!next.pays||!next.etablissement){toast("Renseignez le pays et le nom de l’établissement.");return;}
+  const previous=state.school;state.school=next;
+  if(!save()){state.school=previous;return;}
+  toast("Paramètres de l’école enregistrés.");
+};
+const FICHE_ROWS=39;
+const fNum=new Intl.NumberFormat("fr-FR",{useGrouping:false,maximumFractionDigits:2});
+function renderFiche(){
+  const c=$("c-cls").value,o=$("c-opt").value,b=$("c-br").value;
+  const {p,x}=getMax(o,b),s=2*p+x;
+  const st=sortEl(state.eleves.filter(e=>e.classe===c&&e.option===o&&hasCours(e,b)));
+  const school=schoolSettings();
+  const institution=[school.pays,school.ministere,school.enseignement,school.province,school.etablissement].filter(Boolean).map(v=>`<div>${esc(v)}</div>`).join("");
+  const numcells=v=>v.map((n,i)=>`<td${[0,4,8,9].includes(i)?' class="fiche-group"':""}>${n===null?"":fNum.format(n)}</td>`).join("");
+  // Reserve additional vertical space for long names before starting another printed sheet.
+  const sheets=[{start:0,students:[],used:0}],budget=54;
+  for(const e of st){
+    const weight=Math.max(1,Math.ceil(e.nom.length/42));
+    let sheet=sheets.at(-1);
+    if(sheet.students.length===FICHE_ROWS||sheet.students.length&&sheet.used+weight>budget){
+      sheet={start:sheet.start+sheet.students.length,students:[],used:0};sheets.push(sheet);
+    }
+    sheet.students.push(e);sheet.used+=weight;
+  }
+  const rows=sheets.map(({start,students,used},page)=>{
+    const length=page===sheets.length-1?students.length+Math.max(0,Math.min(FICHE_ROWS-students.length,budget-used)):students.length;
+    const trs=Array.from({length},(_,i)=>{
+      const index=start+i,e=students[i];
+      const n=e?readNote(c,o,b,e.id):{},r=compute(n);
+      const periods=[1,2,3,4].map(j=>FIELDS.some(f=>num(n[`p${j}_${f}`])!==null)?r[`m${j}`]:null);
+      const e1=num(n.ex1),e2=num(n.ex2);
+      const a1=[periods[0],periods[1],e1].some(v=>v!==null)?r.s1:null;
+      const a2=[periods[2],periods[3],e2].some(v=>v!==null)?r.s2:null;
+      const total=a1===null&&a2===null?null:r.an;
+      return `<tr><td>${String(index+1).padStart(2,"0")}</td><td${e&&e.nom.length>40?' class="fiche-long-name"':""}>${e?esc(e.nom):""}</td>${numcells([periods[0],periods[1],e1,a1,periods[2],periods[3],e2,a2,total,total])}</tr>`;
+    }).join("");
+    return `<article class="fiche-page" aria-label="Fiche de cotation, page ${page+1}">
+      <div class="fiche-institution">${institution}</div>
+      <div class="fiche-meta"><div>PROFESSEUR :<br>${esc(school.prof||"...................................................")}</div><div>Classe : ${esc([c,o].filter(Boolean).join(" – ")||"............................")}<br>Branche : ${esc(b||"........................")}<br>Année : ${esc(school.annee||"20......–20......")}</div></div>
+      <h3 class="fiche-title">FICHE DE COTATION</h3>
+      <div class="fiche-grid">${school.filigrane?`<div class="fiche-watermark" aria-hidden="true">${esc(school.filigrane)}</div>`:""}
+      <table class="fiche-table" aria-label="Notes par période et semestre"><colgroup><col class="fiche-num"><col class="fiche-names"><col class="fiche-first"><col span="9"></colgroup>
+      <thead><tr><th rowspan="3" class="fiche-number" scope="col">N°</th><th scope="col">NOM ET POST-NOMS</th><th colspan="4" scope="colgroup" class="fiche-group">1<sup>er</sup> SEMESTRE</th><th colspan="4" scope="colgroup" class="fiche-group">SECOND SEMESTRE</th><th rowspan="2" scope="col" class="fiche-group">T.SE</th><th rowspan="2" scope="col" class="fiche-group">T.GE</th></tr>
+      <tr><th rowspan="2" scope="row" class="fiche-max-title">MAXIMA <span class="max-arrow" aria-hidden="true"></span></th><th scope="col" class="fiche-period fiche-group">1<sup>re</sup>P</th><th scope="col" class="fiche-period">2<sup>e</sup>P</th><th scope="col" class="fiche-period">Exam</th><th scope="col">T.S</th><th scope="col" class="fiche-period fiche-group">3<sup>e</sup>P</th><th scope="col" class="fiche-period">4<sup>e</sup>P</th><th scope="col" class="fiche-period">Exam</th><th scope="col">T.S</th></tr>
+      <tr>${[p,p,x,s,p,p,x,s,2*s,2*s].map((v,i)=>`<th${[0,4,8,9].includes(i)?' class="fiche-group"':""}>${fNum.format(v)}</th>`).join("")}</tr></thead>
+      <tbody>${trs}</tbody></table></div></article>`;
+  });
+  $("fiche-pages").innerHTML=rows.join("");
+}
+function syncFiche(){
+  [["cls",CL],["opt",optsFor($("c-cls").value)],["br",coursFor($("c-opt").value)]].forEach(([key,values])=>{
+    const f=$("f-"+key);fill(f,values,false);f.value=$("c-"+key).value;
+  });
+  renderFiche();
+}
+["cls","opt","br"].forEach(key=>{$("f-"+key).onchange=()=>{
+  $("c-"+key).value=$("f-"+key).value;
+  ({cls:syncC,opt:syncCC,br:renderCahier})[key]();syncFiche();
+};});
+function printFiche(){save();window.print();}
+$("c-view-fiche").onclick=()=>{$("tab-fiche").click();$("tab-fiche").focus();};
+$("c-print-fiche").onclick=()=>{$("c-view-fiche").click();printFiche();};
+$("f-print").onclick=printFiche;
+$("f-go-cahier").onclick=()=>{$("tab-cahier").click();$("tab-cahier").focus();};
+window.addEventListener("beforeprint",()=>{if($("fiche").classList.contains("on"))renderFiche();});
+
+/* Présences quotidiennes */
+const attendanceSession=()=>`${$('a-cls').value}||${$('a-opt').value}||${$('a-cours').value}||${$('a-per').value}||${$('a-date').value}`;
+const attendanceKey=(sid,id)=>`${sid}||${id}`;
+function syncAttendance(){
+  fill($('a-opt'),optsFor($('a-cls').value),true);
+  fill($('a-cours'),coursFor($('a-opt').value),true);
+  renderPresences();
+}
+function renderPresences(){
+  if(!$('a-cls').value)return;
+  const cls=$('a-cls').value,opt=$('a-opt').value,course=$('a-cours').value,per=$('a-per').value,date=$('a-date').value;
+  const sid=attendanceSession();$('a-prof').value=state.presenceTeachers[sid]||'';
+  const students=sortEl(state.eleves.filter(e=>e.classe===cls&&e.option===opt&&hasCours(e,course)));
+  const counts={P:0,A:0,AJ:0,R:0};
+  $('a-body').innerHTML=students.length?students.map((e,i)=>{
+    const v=state.presences[attendanceKey(sid,e.id)]||'';if(v)counts[v]++;
+    return `<tr data-id="${e.id}"><td>${i+1}</td><td class="nm">${esc(e.nom)}</td><td>${v==='P'?'✓':''}</td><td>${v==='A'?'✓':''}</td><td>${v==='AJ'?'✓':''}</td><td>${v==='R'?'✓':''}</td><td><select class="a-status" aria-label="Présence de ${esc(e.nom)}"><option value="">— Choisir —</option><option value="P" ${v==='P'?'selected':''}>Présent</option><option value="A" ${v==='A'?'selected':''}>Absent</option><option value="AJ" ${v==='AJ'?'selected':''}>Absence justifiée</option><option value="R" ${v==='R'?'selected':''}>Retard</option></select></td></tr>`;
+  }).join(''):`<tr><td colspan="7" class="empty">Aucun élève inscrit à ce cours.</td></tr>`;
+  const total=Object.values(counts).reduce((a,b)=>a+b,0);
+  $('a-meta').textContent=`${cls} : ${opt} : ${course} — ${date||'date non choisie'} — ${total}/${students.length} présence(s) enregistrée(s) : ${counts.P} présent(s), ${counts.A} absent(s), ${counts.AJ} absence(s) justifiée(s), ${counts.R} retard(s).`;
+}
+$('a-cls').onchange=syncAttendance;
+$('a-opt').onchange=()=>{fill($('a-cours'),coursFor($('a-opt').value),true);renderPresences();};
+['a-cours','a-per','a-date'].forEach(id=>$(id).onchange=renderPresences);
+$('a-prof').onchange=()=>{state.presenceTeachers[attendanceSession()]=$('a-prof').value.trim();save();};
+$('a-body').onchange=ev=>{
+  if(!ev.target.classList.contains('a-status'))return;
+  const tr=ev.target.closest('tr'),id=tr.dataset.id,key=attendanceKey(attendanceSession(),id);
+  if(ev.target.value)state.presences[key]=ev.target.value;else delete state.presences[key];
+  state.presenceTeachers[attendanceSession()]=$('a-prof').value.trim();save();renderPresences();
+};
+$('a-all').onclick=()=>{
+  const sid=attendanceSession();
+  $('a-body').querySelectorAll('tr[data-id]').forEach(tr=>{state.presences[attendanceKey(sid,tr.dataset.id)]='P';});
+  state.presenceTeachers[sid]=$('a-prof').value.trim();save();renderPresences();toast('Tous les élèves sont marqués présents.');
+};
+$('a-transfer').onclick=()=>{
+  const cls=$('a-cls').value,opt=$('a-opt').value,course=$('a-cours').value,per=$('a-per').value;
+  const students=state.eleves.filter(e=>e.classe===cls&&e.option===opt&&hasCours(e,course));
+  if(!students.length){toast('Aucun élève à traiter.');return;}
+  const prefix=`${cls}||${opt}||${course}||${per}||`;
+  const sessions=[...new Set(Object.keys(state.presences).filter(k=>k.startsWith(prefix)).map(k=>k.slice(prefix.length).split('||')[0]))];
+  if(!sessions.length){toast('Aucune présence enregistrée pour cette période.');return;}
+  const M=getMax(opt,course);
+  students.forEach(e=>{
+    let total=0,earned=0;
+    sessions.forEach(date=>{
+      const v=state.presences[attendanceKey(`${cls}||${opt}||${course}||${per}||${date}`,e.id)];
+      if(v==='P'){total++;earned++;}else if(v==='A'||!v){total++;}else if(v==='R'){total++;earned+=0.5;}
+    });
+    if(total>0)writeNote(cls,opt,course,e.id,`p${per}_pres`,(earned/total*M.p).toFixed(1));
+  });
+  save();
+  if($('c-cls').value===cls&&$('c-opt').value===opt&&$('c-br').value===course)renderCahier();
+  toast(`Notes de présence transférées pour la période ${per}.`);
+};
+
+/* Bilan */
+function bilanRows(){
+  const cls=$("b-cls").value,opt=$("b-opt").value,out=[];
+  const st=state.eleves.filter(e=>e.classe===cls&&(opt==="ALL"||e.option===opt));
+  st.forEach(e=>coursFor(e.option).forEach(b=>{const n=readNote(e.classe,e.option,b,e.id);if(hasData(n))out.push({e,b,c:compute(n)});}));
+  const g={};out.forEach(r=>(g[r.e.option+"||"+r.b]=g[r.e.option+"||"+r.b]||[]).push(r));
+  Object.values(g).forEach(a=>{a.slice().sort((x,y)=>y.c.an-x.c.an).forEach((r,i,s)=>{r.rang=i&&r.c.an===s[i-1].c.an?s[i-1].rang:i+1;});});
+  out.sort((a,b)=>a.e.option.localeCompare(b.e.option,"fr")||a.b.localeCompare(b.b,"fr")||a.rang-b.rang);
+  return {st,out};
+}
+function renderBilan(){
+  const {st,out}=bilanRows(),tb=$("b-body");
+  $("k-eff").textContent=st.length;$("k-fic").textContent=out.length;
+  const avg=k=>out.length?(out.reduce((a,r)=>a+r.c[k],0)/out.length).toFixed(1):"0.0";
+  $("k-s1").textContent=avg("s1");$("k-an").textContent=avg("an");
+  if(!out.length){tb.innerHTML=`<tr><td colspan="14" class="empty">Aucune note saisie pour cette classe. Commencez dans l'onglet Cotations.</td></tr>`;return;}
+  tb.innerHTML=out.map(r=>{const c=r.c,sur=2*(2*getMax(r.e.option,r.b).p+getMax(r.e.option,r.b).x);return `<tr><td>${r.rang}</td><td class="nm">${esc(r.e.nom)}</td><td>${esc(r.e.option)}</td><td>${esc(r.b)}</td><td>${c.m1.toFixed(1)}</td><td>${c.m2.toFixed(1)}</td><td class="xm">${c.e1.toFixed(1)}</td><td class="t">${c.s1.toFixed(1)}</td><td>${c.m3.toFixed(1)}</td><td>${c.m4.toFixed(1)}</td><td class="xm">${c.e2.toFixed(1)}</td><td class="t">${c.s2.toFixed(1)}</td><td class="t ${c.an<sur/2?"bad":"ok"}">${c.an.toFixed(1)}</td><td>${sur}</td></tr>`;}).join("");
+}
+$("b-cls").onchange=renderBilan;$("b-opt").onchange=renderBilan;
+$("b-csv").onclick=()=>{
+  const {out}=bilanRows();if(!out.length){toast("Rien à exporter.");return;}
+  const rows=[["Rang","Nom","Classe","Option","Cours","Moy P1","Moy P2","Exam S1","Total S1","Moy P3","Moy P4","Exam S2","Total S2","Total annuel","Sur"]];
+  out.forEach(r=>{const c=r.c,M=getMax(r.e.option,r.b);rows.push([r.rang,r.e.nom,r.e.classe,r.e.option,r.b,c.m1,c.m2,c.e1,c.s1,c.m3,c.m4,c.e2,c.s2,c.an,2*(2*M.p+M.x)].map(v=>typeof v==="number"&&!Number.isInteger(v)?v.toFixed(1).replace(".",","):v));});
+  download("bilan-"+$("b-cls").value+".csv","\ufeff"+rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(";")).join("\n"),"text/csv");
+};
+
+/* Sauvegarde */
+function download(name,txt,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([txt],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+$("bk-out").onclick=()=>download("cahier-cotation-sauvegarde.json",JSON.stringify(state),"application/json");
+$("bk-in").onclick=()=>$("bk-file").click();
+$("bk-file").onchange=ev=>{
+  const f=ev.target.files[0];if(!f)return;
+  f.text().then(t=>{
+    const p=JSON.parse(t);if(!Array.isArray(p.eleves)||typeof p.notes!=="object")throw 0;
+    if(!confirm("Remplacer les données actuelles par cette sauvegarde ?"))return;
+    state=Object.assign(fresh(),p);save();init();toast("Sauvegarde restaurée.");
+  }).catch(()=>toast("Ce fichier n'est pas une sauvegarde valide.")).finally(()=>{ev.target.value="";});
+};
+
+/* Démarrage */
+function refreshFilters(){fill($("k-opt"),allOpts(),true);fill($("m-opt"),allOpts(),true);fill($("e-opt"),allOpts(),true,"Toutes les options");fill($("b-opt"),allOpts(),true,"Toutes les options");}
+function init(){
+  fill($("e-cls"),CL,true,"Toutes les classes");
+  ["n-cls","c-cls","b-cls","a-cls","imp-cls"].forEach(i=>fill($(i),CL,true));
+  refreshFilters();head();syncAdd();syncC();syncAttendance();syncImport();renderMax();renderEleves();renderBilan();renderSchool();
+  if($("fiche").classList.contains("on"))syncFiche();
+}
+load();
+if(!state.presences)state.presences={};if(!state.presenceTeachers)state.presenceTeachers={};
+$("a-date").value=new Date().toISOString().slice(0,10);
+init();
+</script>
+<script>
+(() => {
+  const tabs = [...document.querySelectorAll('.tab')];
+  const syncTabs = () => tabs.forEach(tab => tab.tabIndex = tab.getAttribute('aria-selected') === 'true' ? 0 : -1);
+  tabs.forEach(tab => tab.addEventListener('click', syncTabs));
+  document.querySelector('.tabs').addEventListener('keydown', event => {
+    const i = tabs.indexOf(event.target);
+    if (i < 0) return;
+    const n = {ArrowRight: (i+1)%tabs.length, ArrowLeft: (i+tabs.length-1)%tabs.length, Home: 0, End: tabs.length-1}[event.key];
+    if (n === undefined) return;
+    event.preventDefault(); tabs[n].click(); tabs[n].focus();
+  });
+  const tools = [...document.querySelectorAll('[data-open-details]')].map(button => [button,document.getElementById(button.dataset.openDetails)]);
+  tools.forEach(([button, details]) => {
+    details.addEventListener('toggle', () => {
+      button.setAttribute('aria-expanded', String(details.open));
+      if (!details.open && details.contains(document.activeElement)) button.focus();
+    });
+    button.addEventListener('click', () => {
+      const open = !details.open;
+      tools.forEach(([, item]) => {if (item !== details) item.open = false;});
+      details.open = open;
+      if (open) details.querySelector('summary').focus();
+    });
+  });
+})();
+</script>
+</body>
+</html>
