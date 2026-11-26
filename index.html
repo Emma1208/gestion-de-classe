@@ -313,13 +313,33 @@ footer span{margin-right:auto}
 </section>
 
 <footer>
-  <span>Données enregistrées dans ce navigateur.</span>
+  <span id="bdd-status">Données enregistrées dans ce navigateur.</span>
+  <button class="btn alt" id="gh-config-btn">☁️ Configurer GitHub BDD</button>
+  <button class="btn alt" id="gh-pull">↘️ Charger de GitHub</button>
+  <button class="btn alt" id="gh-push">↗️ Envoyer sur GitHub</button>
   <button class="btn alt" id="bk-out">Sauvegarder les données (JSON)</button>
   <button class="btn alt" id="bk-in">Restaurer une sauvegarde</button>
   <input type="file" id="bk-file" accept="application/json" hidden>
 </footer>
 </main>
 <div id="toast" role="status"></div>
+
+<div id="gh-config-box" style="display:none;position:fixed;inset:0;z-index:20;background:#17253b99;overflow:auto">
+  <div style="background:#fff;color:var(--ink);width:min(480px,calc(100% - 32px));margin:8vh auto;border-radius:14px;padding:22px;box-shadow:0 12px 40px #0004">
+    <h2 style="margin:0 0 6px;font-size:1.2rem">Configuration GitHub BDD</h2>
+    <p style="color:var(--mut);font-size:.85rem;margin:0 0 14px">Les donnees seront lues et ecrites dans <code>bdd.json</code> a la racine du depot.</p>
+    <label class="f" style="margin-bottom:10px">Utilisateur / Org<input type="text" id="gh-owner" placeholder="Emma1208"></label>
+    <label class="f" style="margin-bottom:10px">Depot<input type="text" id="gh-repo" placeholder="gestion-de-classe"></label>
+    <label class="f" style="margin-bottom:10px">Chemin du fichier<input type="text" id="gh-path" placeholder="bdd.json"></label>
+    <label class="f" style="margin-bottom:14px">Personal Access Token (PAT)<input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx"></label>
+    <div class="actions" style="margin:0">
+      <button class="btn" id="gh-save" type="button">Enregistrer & Connecter</button>
+      <button class="btn alt" id="gh-cancel" type="button">Fermer</button>
+    </div>
+    <p class="note">Le token est conserve dans ce navigateur uniquement.</p>
+  </div>
+</div>
+
 <dialog id="rename-dialog" aria-labelledby="rename-title">
   <form id="rename-form">
     <h2 id="rename-title">Modifier le nom de l’élève</h2>
@@ -352,11 +372,19 @@ const esc=s=>String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"
 const SCHOOL_DEFAULT={pays:"RÉPUBLIQUE DÉMOCRATIQUE DU CONGO",ministere:"MINISTÈRE DE L’ÉDUCATION NATIONALE",enseignement:"ENSEIGNEMENT PRIMAIRE, SECONDAIRE ET TECHNIQUE",province:"PROVINCE DU MANIEMA",etablissement:"COMPLEXE SCOLAIRE TUUNGANE",prof:"",annee:"",filigrane:"C.S. TUUNGANE"};
 const fresh=()=>({school:{...SCHOOL_DEFAULT},eleves:[],customOptions:{"1ère":[],"2ème":[],"3ème":[],"4ème":[]},customCoursByOption:{},notes:{},maxima:{},presences:{},presenceTeachers:{}});
 let state=fresh();
+// Acces a l'etat pour le pont GitHub BDD
+window.__gcState = () => state;
+window.__gcSetState = value => {
+  state = Object.assign(fresh(), value || {});
+  state.eleves = sortEl(state.eleves || []);
+  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  init();
+};
 
 function load(){
   try{const r=localStorage.getItem(KEY);if(r){const p=JSON.parse(r);if(p&&Array.isArray(p.eleves)){state=Object.assign(fresh(),p);state.eleves=sortEl(state.eleves);}}}catch(e){}
 }
-function save(){try{const ordered={...state,eleves:sortEl(state.eleves)};localStorage.setItem(KEY,JSON.stringify(ordered));state.eleves=ordered.eleves;return true;}catch(e){toast("Enregistrement impossible dans ce navigateur.");return false;}}
+function save(){try{const ordered={...state,eleves:sortEl(state.eleves)};localStorage.setItem(KEY,JSON.stringify(ordered));state.eleves=ordered.eleves;if(window.GitHubBDD&&window.GitHubBDD.isConnected())window.GitHubBDD.schedulePush();return true;}catch(e){toast("Enregistrement impossible dans ce navigateur.");return false;}}
 let tt;function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2200);}
 
 const optsFor=c=>[...new Set([...(BASE[c]||[]),...((state.customOptions||{})[c]||[])])];
@@ -1007,5 +1035,169 @@ init();
   });
 })();
 </script>
+
+<!-- Pont GitHub BDD : lecture/ecriture de bdd.json avec PAT -->
+<script>
+(function () {
+  const GH_KEY = "gestion_classe_gh_config";
+  const GH_DEFAULTS = {
+    owner: "Emma1208",
+    repo: "gestion-de-classe",
+    path: "bdd.json",
+    token: ""
+  };
+  let sha = "";
+  let timer = null;
+  let syncing = false;
+  let pending = false;
+
+  function creds() {
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem(GH_KEY) || "{}"); } catch (e) {}
+    return Object.assign({}, GH_DEFAULTS, saved);
+  }
+  function connected() { const c = creds(); return !!(c.owner && c.repo && c.path && c.token); }
+  function status(msg, kind) {
+    const el = document.getElementById("bdd-status");
+    if (!el) return;
+    el.textContent = msg;
+    el.style.color = kind === "ok" ? "var(--ok)" : kind === "bad" ? "var(--bad)" : "var(--mut)";
+  }
+  function apiUrl(c) {
+    return "https://api.github.com/repos/" + encodeURIComponent(c.owner) + "/" +
+           encodeURIComponent(c.repo) + "/contents/" + c.path;
+  }
+  function headers(c) {
+    return { "Authorization": "token " + c.token,
+             "Accept": "application/vnd.github.v3+json",
+             "Content-Type": "application/json" };
+  }
+  function statePayload() {
+    const p = JSON.parse(JSON.stringify(window.__gcState ? window.__gcState() : {}));
+    p.app = "Gestion de classe";
+    p.version = 1;
+    p.cle_localStorage = "cahier_cotation_v7_data";
+    return p;
+  }
+
+  async function pull(silent) {
+    if (!connected() || syncing) return;
+    const c = creds();
+    syncing = true;
+    if (!silent) status("Lecture de bdd.json sur GitHub...", null);
+    try {
+      const res = await fetch(apiUrl(c), { headers: headers(c) });
+      if (res.status === 404) {
+        sha = "";
+        status("bdd.json absent : creation lors de la prochaine sauvegarde.", null);
+        return;
+      }
+      if (!res.ok) throw new Error("HTTP " + res.status + " " + res.statusText);
+      const info = await res.json();
+      sha = info.sha;
+      const txt = decodeURIComponent(escape(atob(info.content.replace(/\s/g, ""))));
+      const remote = JSON.parse(txt);
+      const local = window.__gcState ? window.__gcState() : null;
+      const rt = Number(remote.ts || 0), lt = Number(local && local.ts || 0);
+      if (rt > lt && window.__gcSetState) {
+        window.__gcSetState(remote);
+        status("Donnees chargees depuis GitHub (" + (remote.eleves || []).length + " eleves).", "ok");
+      } else if (lt > rt) {
+        status("Donnees locales plus recentes : envoi sur GitHub...", null);
+        syncing = false;
+        await push(true);
+        return;
+      } else {
+        status("Donnees synchronisees avec GitHub.", "ok");
+      }
+    } catch (err) {
+      status("Echec lecture GitHub : " + err.message, "bad");
+      console.error("GitHub BDD pull:", err);
+    } finally { syncing = false; }
+  }
+
+  async function push(force) {
+    if (!connected()) return;
+    if (syncing && !force) { pending = true; return; }
+    const c = creds();
+    syncing = true;
+    pending = false;
+    status("Sauvegarde de bdd.json sur GitHub...", null);
+    try {
+      const payload = statePayload();
+      payload.ts = Date.now();
+      const body = { message: "Mise a jour Gestion de classe (" + new Date().toLocaleString("fr-FR") + ")",
+                     content: btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2)))) };
+      if (sha) body.sha = sha;
+      const res = await fetch(apiUrl(c), { method: "PUT", headers: headers(c), body: JSON.stringify(body) });
+      if (!res.ok) {
+        const e = await res.json().catch(() => ({}));
+        throw new Error(e.message || "HTTP " + res.status);
+      }
+      const data = await res.json();
+      sha = data.content.sha;
+      status("Sauvegarde GitHub OK.", "ok");
+    } catch (err) {
+      status("Echec ecriture GitHub : " + err.message, "bad");
+      console.error("GitHub BDD push:", err);
+    } finally {
+      syncing = false;
+      if (pending) { pending = false; setTimeout(() => push(), 800); }
+    }
+  }
+
+  function schedulePush() {
+    if (!connected()) return;
+    clearTimeout(timer);
+    status("Modifications en attente de sauvegarde...", null);
+    timer = setTimeout(() => push(), 1200);
+  }
+
+  function renderConfig() {
+    const c = creds();
+    const box = document.getElementById("gh-config-box");
+    if (!box) return;
+    document.getElementById("gh-owner").value = c.owner;
+    document.getElementById("gh-repo").value = c.repo;
+    document.getElementById("gh-path").value = c.path;
+    document.getElementById("gh-token").value = c.token;
+    status(connected() ? "Connecte : " + c.owner + "/" + c.repo + " (" + c.path + ")" :
+           "Non connecte a GitHub (stockage local uniquement).", connected() ? "ok" : null);
+  }
+
+  function init() {
+    const btn = document.getElementById("gh-config-btn");
+    if (!btn) return;
+    btn.onclick = () => {
+      const box = document.getElementById("gh-config-box");
+      box.style.display = box.style.display === "none" ? "block" : "none";
+      if (box.style.display === "block") renderConfig();
+    };
+    document.getElementById("gh-cancel").onclick = () => { document.getElementById("gh-config-box").style.display = "none"; };
+    document.getElementById("gh-save").onclick = async () => {
+      const c = {
+        owner: document.getElementById("gh-owner").value.trim(),
+        repo: document.getElementById("gh-repo").value.trim(),
+        path: document.getElementById("gh-path").value.trim() || "bdd.json",
+        token: document.getElementById("gh-token").value.trim()
+      };
+      if (!c.owner || !c.repo || !c.token) { status("Renseignez owner, repo et token.", "bad"); return; }
+      localStorage.setItem(GH_KEY, JSON.stringify(c));
+      document.getElementById("gh-config-box").style.display = "none";
+      sha = "";
+      renderConfig();
+      await pull();
+    };
+    document.getElementById("gh-pull").onclick = () => pull();
+    document.getElementById("gh-push").onclick = () => push(true);
+    if (connected()) { renderConfig(); pull(true); setInterval(() => pull(true), 120000); }
+  }
+
+  window.GitHubBDD = { isConnected: connected, schedulePush, pull, push, status };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+</script>
+
 </body>
 </html>
