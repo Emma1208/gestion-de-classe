@@ -13,16 +13,7 @@
     "annee": "",
     "filigrane": "C.S. TUUNGANE"
   },
-  "eleves": [
-    {
-      "id": 1,
-      "classe": "1ère",
-      "option": "Commercial",
-      "cours": "Comptabilité",
-      "nom": "TEST ELEVE",
-      "sexe": "M"
-    }
-  ],
+  "eleves": [],
   "customOptions": {
     "1ère": [],
     "2ème": [],
@@ -33,6 +24,5 @@
   "notes": {},
   "maxima": {},
   "presences": {},
-  "presenceTeachers": {},
-  "ts": 1
+  "presenceTeachers": {}
 }
