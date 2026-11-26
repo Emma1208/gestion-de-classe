@@ -3,11 +3,11 @@
     "pays": "RÉPUBLIQUE DÉMOCRATIQUE DU CONGO",
     "ministere": "MINISTÈRE DE L’ÉDUCATION NATIONALE",
     "enseignement": "ENSEIGNEMENT PRIMAIRE, SECONDAIRE ET TECHNIQUE",
-    "province": "PROVINCE DU MANIEMA",
-    "etablissement": "COMPLEXE SCOLAIRE TUUNGANE",
-    "prof": "",
-    "annee": "",
-    "filigrane": "C.S. TUUNGANE"
+    "province": "PROVINCE DE KINSHASA",
+    "etablissement": "COMPLEXE SCOLAIRE MINGA LA PAIX",
+    "prof": "KAKESA MUDIMBA",
+    "annee": "2026-2027",
+    "filigrane": "C.S. MINGA LA PAIX"
   },
   "eleves": [
     {
@@ -414,5 +414,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795735028775
+  "ts": 1795735124926
 }
