@@ -969,7 +969,7 @@
     "8ème||Éducation de base||Géométrie||2||2026-11-27||1": "P",
     "8ème||Éducation de base||Géométrie||2||2026-11-27||2": "P",
     "8ème||Éducation de base||Géométrie||2||2026-11-27||3": "P",
-    "8ème||Éducation de base||Géométrie||2||2026-11-27||4": "P",
+    "8ème||Éducation de base||Géométrie||2||2026-11-27||4": "A",
     "8ème||Éducation de base||Géométrie||2||2026-11-27||5": "P",
     "8ème||Éducation de base||Géométrie||2||2026-11-27||6": "P",
     "8ème||Éducation de base||Géométrie||2||2026-11-27||7": "P",
@@ -1022,5 +1022,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795804522100
+  "ts": 1795804537423
 }
