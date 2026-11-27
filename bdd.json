@@ -311,7 +311,7 @@
       "classe": "8ème",
       "option": "Éducation de base",
       "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
-      "nom": "MULUBA KALOMBO",
+      "nom": "MULUMBA KALOMBO",
       "sexe": "M"
     },
     {
@@ -574,5 +574,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795766857613
+  "ts": 1795767122430
 }
