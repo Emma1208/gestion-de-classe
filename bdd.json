@@ -107,6 +107,14 @@
       "sexe": "M"
     },
     {
+      "id": 72,
+      "classe": "7ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "NKUNA MBONGO",
+      "sexe": "F"
+    },
+    {
       "id": 68,
       "classe": "7ème",
       "option": "Éducation de base",
@@ -750,5 +758,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795803704322
+  "ts": 1795803760729
 }
