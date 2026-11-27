@@ -251,6 +251,14 @@
       "sexe": "M"
     },
     {
+      "id": 51,
+      "classe": "8ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "MAYEMBA LUAMUENE",
+      "sexe": "M"
+    },
+    {
       "id": 31,
       "classe": "8ème",
       "option": "Éducation de base",
@@ -408,6 +416,14 @@
       "option": "Commercial",
       "cours": "Fiscalité, Mathématiques Financières",
       "nom": "LIYANZA KUMBI",
+      "sexe": "F"
+    },
+    {
+      "id": 52,
+      "classe": "4ème",
+      "option": "Commercial",
+      "cours": "Comptabilité Générale, Comptabilité Analytique",
+      "nom": "WONGA LUYINDA",
       "sexe": "F"
     }
   ],
@@ -574,5 +590,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795767122430
+  "ts": 1795802908601
 }
