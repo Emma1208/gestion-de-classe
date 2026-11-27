@@ -95,6 +95,9 @@ footer span{margin-right:auto}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
 .tabs{flex-wrap:wrap}
+#install-bar{display:none;align-items:center;gap:10px;flex-wrap:wrap;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:0 0 14px;font-size:13px}
+#install-bar.on{display:flex}
+#install-bar button{margin-left:auto}
 .student-actions{display:inline-flex;gap:6px;align-items:center}
 .btn.rename{min-height:32px;padding:5px 9px}
 #rename-dialog,#sex-dialog{margin:auto;width:min(440px,calc(100% - 32px));border:1px solid var(--line);border-radius:14px;padding:22px;color:var(--ink)}
@@ -148,6 +151,11 @@ footer span{margin-right:auto}
   <span class="local">Stockage local</span>
 </div></header>
 <main class="wrap">
+<div id="install-bar" role="status">
+  <span>📲 Installez « Gestion de classe » sur votre téléphone pour un accès hors-ligne.</span>
+  <button type="button" class="btn" id="install-btn">Installer l’application</button>
+  <button type="button" class="btn alt" id="install-close" aria-label="Masquer">✕</button>
+</div>
 <div class="tabs" role="tablist" aria-label="Sections du cahier">
   <button type="button" class="tab" role="tab" id="tab-eleves" aria-controls="eleves" aria-selected="true" tabindex="0" data-tab="eleves"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m20 0v-2a4 4 0 0 0-3-3.9M16 3.2a4 4 0 0 1 0 7.6"/><circle cx="9" cy="7" r="4"/></svg> Élèves</button>
   <button type="button" class="tab" role="tab" id="tab-cahier" aria-controls="cahier" aria-selected="false" tabindex="-1" data-tab="cahier"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8m-8 4h8m-8 4h4"/></svg> Cotations</button>
@@ -1261,6 +1269,47 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./sw.js").catch(err => console.warn("SW:", err));
   });
 }
+</script>
+
+
+<script>
+(function () {
+  var deferred = null;
+  var bar = document.getElementById("install-bar");
+  var btn = document.getElementById("install-btn");
+  var close = document.getElementById("install-close");
+  try { if (localStorage.getItem("gc_install_dismissed") === "1") return; } catch (e) {}
+
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault();
+    deferred = e;
+    bar.classList.add("on");
+  });
+
+  btn.addEventListener("click", function () {
+    if (deferred) {
+      deferred.prompt();
+      deferred.userChoice.then(function (choice) {
+        deferred = null;
+        bar.classList.remove("on");
+      });
+    } else {
+      var ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      alert(ios
+        ? "Sur iPhone : bouton Partager (carré avec flèche) ▸ Ajouter à l’écran d’accueil."
+        : "Dans Chrome : menu ⋮ ▸ Ajouter à l’écran d’accueil ou Installer l’application.");
+    }
+  });
+
+  close.addEventListener("click", function () {
+    bar.classList.remove("on");
+    try { localStorage.setItem("gc_install_dismissed", "1"); } catch (e) {}
+  });
+
+  window.addEventListener("appinstalled", function () {
+    bar.classList.remove("on");
+  });
+})();
 </script>
 
 </body>
