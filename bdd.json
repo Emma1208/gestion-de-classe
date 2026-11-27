@@ -91,6 +91,14 @@
       "sexe": "F"
     },
     {
+      "id": 79,
+      "classe": "7ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "MATONDO POLINA",
+      "sexe": "F"
+    },
+    {
       "id": 58,
       "classe": "7ème",
       "option": "Éducation de base",
@@ -806,5 +814,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795804131060
+  "ts": 1795804153750
 }
