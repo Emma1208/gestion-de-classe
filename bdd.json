@@ -107,6 +107,14 @@
       "sexe": "M"
     },
     {
+      "id": 66,
+      "classe": "7ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "PALATA NSIALA",
+      "sexe": "F"
+    },
+    {
       "id": 61,
       "classe": "7ème",
       "option": "Éducation de base",
@@ -702,5 +710,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795803584601
+  "ts": 1795803603344
 }
