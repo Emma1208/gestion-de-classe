@@ -418,7 +418,11 @@
     "4ème": []
   },
   "customCoursByOption": {},
-  "notes": {},
+  "notes": {
+    "8ème||Éducation de base||Statistiques||16": {
+      "p1_ie1": "4"
+    }
+  },
   "maxima": {
     "Éducation de base||Algèbre": {
       "p": 40,
@@ -438,5 +442,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795765718350
+  "ts": 1795765950714
 }
