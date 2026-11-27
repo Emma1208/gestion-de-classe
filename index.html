@@ -97,10 +97,11 @@ footer span{margin-right:auto}
 .tabs{flex-wrap:wrap}
 .student-actions{display:inline-flex;gap:6px;align-items:center}
 .btn.rename{min-height:32px;padding:5px 9px}
-#rename-dialog{margin:auto;width:min(440px,calc(100% - 32px));border:1px solid var(--line);border-radius:14px;padding:22px;color:var(--ink)}
-#rename-dialog::backdrop{background:#17253b77}
-#rename-dialog .f{margin:12px 0}
-#rename-dialog .actions{margin:0}
+#rename-dialog,#sex-dialog{margin:auto;width:min(440px,calc(100% - 32px));border:1px solid var(--line);border-radius:14px;padding:22px;color:var(--ink)}
+#rename-dialog::backdrop,#sex-dialog::backdrop{background:#17253b77}
+#rename-dialog .f,#sex-dialog .f{margin:12px 0}
+#rename-dialog .actions,#sex-dialog .actions{margin:0}
+#sex-dialog h2{margin:0 0 6px;font-size:1.15rem}
 #school-form .bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}
 #school-form .f{align-self:end}
 #fiche .fiche-scroll{overflow:auto;background:#eef2f7;border:1px solid var(--line);border-radius:10px;padding:12px}
@@ -354,6 +355,15 @@ footer span{margin-right:auto}
   </form>
 </dialog>
 
+<dialog id="sex-dialog" aria-labelledby="sex-title">
+  <form id="sex-form">
+    <h2 id="sex-title">Modifier le sexe de l’élève</h2>
+    <p class="note" id="sex-eleve-nom" style="margin:0 0 10px"></p>
+    <label class="f">Sexe<select id="sex-value"><option value="M">M — Masculin</option><option value="F">F — Féminin</option></select></label>
+    <div class="actions"><button class="btn" type="submit">Enregistrer</button><button class="btn alt" type="button" id="sex-cancel">Annuler</button></div>
+  </form>
+</dialog>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
@@ -425,13 +435,15 @@ function renderEleves(){
   list.forEach(e=>{
     const g=`${e.classe} : ${e.option}`;
     if(g!==last){last=g;n=0;h+=`<tr class="grp"><td colspan="5">${esc(g)}</td></tr>`;}
-    h+=`<tr><td>${++n}</td><td class="nm">${esc(e.nom)}</td><td>${e.sexe}</td><td>${esc(e.cours)}</td><td><span class="student-actions"><button type="button" class="btn alt rename" data-rename="${esc(e.id)}">Modifier le nom</button><button type="button" class="btn del" data-del="${esc(e.id)}">Supprimer</button></span></td></tr>`;
+    h+=`<tr><td>${++n}</td><td class="nm">${esc(e.nom)}</td><td>${e.sexe}</td><td>${esc(e.cours)}</td><td><span class="student-actions"><button type="button" class="btn alt rename" data-rename="${esc(e.id)}">Modifier le nom</button><button type="button" class="btn alt rename" data-sex="${esc(e.id)}">Modifier le sexe</button><button type="button" class="btn del" data-del="${esc(e.id)}">Supprimer</button></span></td></tr>`;
   });
   tb.innerHTML=h;
 }
 $("e-body").onclick=ev=>{
   const edit=ev.target.closest("[data-rename]");
   if(edit){openRename(edit.dataset.rename);return;}
+  const sexBtn=ev.target.closest("[data-sex]");
+  if(sexBtn){openSex(sexBtn.dataset.sex);return;}
   const id=ev.target.dataset.del;if(!id)return;
   const e=state.eleves.find(x=>String(x.id)===id);
   if(!e||!confirm(`Supprimer ${e.nom} et toutes ses notes ?`))return;
@@ -461,6 +473,27 @@ $("rename-form").onsubmit=ev=>{
   renameDialog.close();renderEleves();toast("Nom de l’élève modifié.");
   [...$("e-body").querySelectorAll("[data-rename]")].find(x=>x.dataset.rename===renameId)?.focus();
 };
+let sexId=null;
+const sexDialog=$("sex-dialog"),sexSelect=$("sex-value");
+function openSex(id){
+  const e=state.eleves.find(x=>String(x.id)===id);
+  if(!e)return;
+  sexId=id;sexSelect.value=e.sexe==="F"?"F":"M";
+  $("sex-eleve-nom").textContent=e.nom;
+  sexDialog.showModal();
+}
+$("sex-cancel").onclick=()=>sexDialog.close();
+$("sex-form").onsubmit=ev=>{
+  ev.preventDefault();
+  const e=state.eleves.find(x=>String(x.id)===sexId);
+  if(!e){sexDialog.close();return;}
+  const previous=e.sexe;
+  e.sexe=sexSelect.value==="F"?"F":"M";
+  if(!save()){e.sexe=previous;return;}
+  sexDialog.close();renderEleves();toast("Sexe de l’élève modifié.");
+  [...$("e-body").querySelectorAll("[data-sex]")].find(x=>x.dataset.sex===sexId)?.focus();
+};
+
 ["e-cls","e-opt"].forEach(i=>$(i).onchange=renderEleves);
 $("e-q").oninput=renderEleves;
 $("e-reset").onclick=()=>{$("e-cls").value="ALL";$("e-opt").value="ALL";$("e-q").value="";renderEleves();};
