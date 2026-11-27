@@ -211,6 +211,14 @@
       "sexe": "F"
     },
     {
+      "id": 78,
+      "classe": "7ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "YOBO MATETI",
+      "sexe": "F"
+    },
+    {
       "id": 1,
       "classe": "8ème",
       "option": "Éducation de base",
@@ -798,5 +806,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795804108676
+  "ts": 1795804131060
 }
