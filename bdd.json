@@ -1491,17 +1491,20 @@
     "7ème||Éducation de base||Algèbre||2||2026-11-27||61": "P",
     "7ème||Éducation de base||Algèbre||2||2026-11-27||67": "P",
     "7ème||Éducation de base||Algèbre||2||2026-11-27||78": "P",
-    "7ème||Éducation de base||Algèbre||2||2026-11-27||81": "P"
+    "7ème||Éducation de base||Algèbre||2||2026-11-27||81": "P",
+    "1ère||Commercial||Comptabilité Générale||2||2026-11-27||49": "P",
+    "1ère||Commercial||Comptabilité Générale||2||2026-11-27||48": "P"
   },
   "presenceTeachers": {
     "7ème||Éducation de base||Géométrie||2||2026-11-27": "KAKESA MUDIMBA",
     "8ème||Éducation de base||Géométrie||2||2026-11-27": "KAKESA MUDIMBA",
     "7ème||Éducation de base||Arithmétique||2||2026-11-27": "Kakesa mudimba",
     "7ème||Éducation de base||Algèbre||2||2026-11-27": "Kakesa mudimba",
-    "1ère||Commercial||Comptabilité||2||2026-11-27": "KAKESA MUDIMBA"
+    "1ère||Commercial||Comptabilité||2||2026-11-27": "KAKESA MUDIMBA",
+    "1ère||Commercial||Comptabilité Générale||2||2026-11-27": ""
   },
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795820579296
+  "ts": 1795820586438
 }
