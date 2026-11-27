@@ -385,6 +385,14 @@
       "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
       "nom": "VANGU VEMBA",
       "sexe": "M"
+    },
+    {
+      "id": 48,
+      "classe": "1ère",
+      "option": "Commercial",
+      "cours": "Comptabilité Générale",
+      "nom": "MULATA MUFONI",
+      "sexe": "M"
     }
   ],
   "customOptions": {
@@ -414,5 +422,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795735124926
+  "ts": 1795765344769
 }
