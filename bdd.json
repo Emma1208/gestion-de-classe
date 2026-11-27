@@ -1499,7 +1499,8 @@
     "7ème||Éducation de base||Algèbre||2||2026-11-27||81": "P",
     "1ère||Commercial||Comptabilité Générale||2||2026-11-27||49": "P",
     "1ère||Commercial||Comptabilité Générale||2||2026-11-27||48": "P",
-    "3ème||Commercial||Mathématiques Financières||2||2026-11-27||50": "P"
+    "3ème||Commercial||Mathématiques Financières||2||2026-11-27||50": "P",
+    "3ème||Commercial||Fiscalité||2||2026-11-27||50": "P"
   },
   "presenceTeachers": {
     "7ème||Éducation de base||Géométrie||2||2026-11-27": "KAKESA MUDIMBA",
@@ -1508,10 +1509,11 @@
     "7ème||Éducation de base||Algèbre||2||2026-11-27": "Kakesa mudimba",
     "1ère||Commercial||Comptabilité||2||2026-11-27": "KAKESA MUDIMBA",
     "1ère||Commercial||Comptabilité Générale||2||2026-11-27": "",
-    "3ème||Commercial||Mathématiques Financières||2||2026-11-27": ""
+    "3ème||Commercial||Mathématiques Financières||2||2026-11-27": "",
+    "3ème||Commercial||Fiscalité||2||2026-11-27": ""
   },
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795820655090
+  "ts": 1795820663510
 }
