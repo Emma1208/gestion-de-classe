@@ -587,6 +587,10 @@
     "Commercial||Comptabilité Générale": {
       "p": 60,
       "x": 120
+    },
+    "Commercial||Comptabilité Analytique": {
+      "p": 60,
+      "x": 120
     }
   },
   "presences": {},
@@ -594,5 +598,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795802975935
+  "ts": 1795802981539
 }
