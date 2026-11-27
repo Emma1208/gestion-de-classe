@@ -387,6 +387,14 @@
       "sexe": "M"
     },
     {
+      "id": 49,
+      "classe": "1ère",
+      "option": "Commercial",
+      "cours": "Comptabilité Générale",
+      "nom": "MBUYI KANKU",
+      "sexe": "M"
+    },
+    {
       "id": 48,
       "classe": "1ère",
       "option": "Commercial",
@@ -422,5 +430,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795765344769
+  "ts": 1795765419045
 }
