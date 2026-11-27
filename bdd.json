@@ -99,6 +99,14 @@
       "sexe": "M"
     },
     {
+      "id": 76,
+      "classe": "7ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "MUKENDI KAVUDIA",
+      "sexe": "M"
+    },
+    {
       "id": 74,
       "classe": "7ème",
       "option": "Éducation de base",
@@ -782,5 +790,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795803992443
+  "ts": 1795804060594
 }
