@@ -380,6 +380,7 @@ const fresh=()=>({school:{...SCHOOL_DEFAULT},eleves:[],customOptions:{"1ère":[]
 let state=fresh();
 // Acces a l'etat pour le pont GitHub BDD
 window.__gcState = () => state;
+window.__gcSetTs = value => { try { const s = window.__gcState ? window.__gcState() : null; if (s) { s.ts = value; localStorage.setItem(KEY, JSON.stringify(s)); } } catch(e) {} };
 window.__gcSetState = value => {
   state = Object.assign(fresh(), value || {});
   state.eleves = sortEl(state.eleves || []);
@@ -1056,6 +1057,8 @@ init();
   let timer = null;
   let syncing = false;
   let pending = false;
+  let dirty = false;          // vrai des qu'une modification locale n'est pas encore poussee
+  let lastLocalTs = 0;        // dernier ts ecrit localement, pour ne pas ecraser les saisies
 
   function creds() {
     let saved = {};
@@ -1104,15 +1107,22 @@ init();
       const txt = decodeURIComponent(escape(atob(info.content.replace(/\s/g, ""))));
       const remote = JSON.parse(txt);
       const local = window.__gcState ? window.__gcState() : null;
-      const rt = Number(remote.ts || 0), lt = Number(local && local.ts || 0);
-      if (rt > lt && window.__gcSetState) {
-        window.__gcSetState(remote);
-        status("Donnees chargees depuis GitHub (" + (remote.eleves || []).length + " eleves).", "ok");
-      } else if (lt > rt) {
+      const rt = Number(remote.ts || 0);
+      const lt = Number((local && local.ts) || lastLocalTs || 0);
+      if (dirty || pending || timer) {
+        status("Modifications locales non encore envoyees : synchronisation reportee.", null);
+        return;                                  // ne jamais ecraser une saisie en cours
+      }
+      if (lt > rt) {
         status("Donnees locales plus recentes : envoi sur GitHub...", null);
         syncing = false;
         await push(true);
         return;
+      }
+      if (rt > lt && window.__gcSetState) {
+        window.__gcSetState(remote);
+        lastLocalTs = rt;
+        status("Donnees chargees depuis GitHub (" + (remote.eleves || []).length + " eleves).", "ok");
       } else {
         status("Donnees synchronisees avec GitHub.", "ok");
       }
@@ -1131,7 +1141,8 @@ init();
     status("Sauvegarde de bdd.json sur GitHub...", null);
     try {
       const payload = statePayload();
-      payload.ts = Date.now();
+      const ts = Date.now();
+      payload.ts = ts;
       const body = { message: "Mise a jour Gestion de classe (" + new Date().toLocaleString("fr-FR") + ")",
                      content: btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2)))) };
       if (sha) body.sha = sha;
@@ -1142,9 +1153,13 @@ init();
       }
       const data = await res.json();
       sha = data.content.sha;
+      // CRITIQUE : aligner le ts local sur celui envoyé, sinon le pull suivant écrase les saisies
+      lastLocalTs = ts;
+      dirty = false;
+      if (window.__gcSetTs) window.__gcSetTs(ts);
       status("Sauvegarde GitHub OK.", "ok");
     } catch (err) {
-      status("Echec ecriture GitHub : " + err.message, "bad");
+      status("Echec ecriture GitHub : " + err.message + " (donnees locales conservees)", "bad");
       console.error("GitHub BDD push:", err);
     } finally {
       syncing = false;
@@ -1153,10 +1168,11 @@ init();
   }
 
   function schedulePush() {
+    dirty = true;
     if (!connected()) return;
-    clearTimeout(timer);
     status("Modifications en attente de sauvegarde...", null);
-    timer = setTimeout(() => push(), 1200);
+    if (timer) return;                    // ne pas reporter sans cesse : le premier envoi part
+    timer = setTimeout(() => { timer = null; push(); }, 1200);
   }
 
   function renderConfig() {
@@ -1195,7 +1211,7 @@ init();
       await pull();
     };
     document.getElementById("gh-pull").onclick = () => pull();
-    document.getElementById("gh-push").onclick = () => push(true);
+    document.getElementById("gh-push").onclick = () => { dirty = false; push(true); };
     if (connected()) { renderConfig(); pull(true); setInterval(() => pull(true), 120000); }
   }
 
