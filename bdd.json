@@ -1205,6 +1205,9 @@
     },
     "1ère||Commercial||Comptabilité Générale||49": {
       "p2_ie1": "42"
+    },
+    "1ère||Commercial||Comptabilité Générale||48": {
+      "p2_ie1": "43"
     }
   },
   "maxima": {
@@ -1354,5 +1357,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795820490867
+  "ts": 1795820496672
 }
