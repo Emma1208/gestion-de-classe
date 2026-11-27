@@ -11,6 +11,14 @@
   },
   "eleves": [
     {
+      "id": 64,
+      "classe": "7ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "AMBROISE MBOLOKOKO",
+      "sexe": "M"
+    },
+    {
       "id": 62,
       "classe": "7ème",
       "option": "Éducation de base",
@@ -686,5 +694,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795803437564
+  "ts": 1795803456380
 }
