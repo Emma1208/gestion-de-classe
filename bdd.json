@@ -1321,6 +1321,9 @@
     },
     "3ème||Commercial||Mathématiques Financières||50": {
       "p2_pres": "20.0"
+    },
+    "3ème||Commercial||Fiscalité||50": {
+      "p2_pres": "20.0"
     }
   },
   "maxima": {
@@ -1515,5 +1518,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795820663510
+  "ts": 1795820666773
 }
