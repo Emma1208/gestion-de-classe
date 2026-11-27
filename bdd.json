@@ -520,6 +520,9 @@
     },
     "8ème||Éducation de base||Statistiques||24": {
       "p1_ie1": "4"
+    },
+    "8ème||Éducation de base||Statistiques||28": {
+      "p1_ie1": "4"
     }
   },
   "maxima": {
@@ -541,5 +544,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795766570154
+  "ts": 1795766584754
 }
