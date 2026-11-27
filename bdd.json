@@ -1202,6 +1202,9 @@
     },
     "7ème||Éducation de base||Arithmétique||81": {
       "p2_pres": "10.0"
+    },
+    "1ère||Commercial||Comptabilité Générale||49": {
+      "p2_ie1": "42"
     }
   },
   "maxima": {
@@ -1351,5 +1354,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795805500713
+  "ts": 1795820490867
 }
