@@ -1101,7 +1101,7 @@
     },
     "7ème||Éducation de base||Arithmétique||62": {
       "p2_pres": "10.0",
-      "p1_ie1": "6"
+      "p1_ie1": "5"
     },
     "7ème||Éducation de base||Arithmétique||54": {
       "p2_pres": "10.0"
@@ -1350,5 +1350,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795805428127
+  "ts": 1795805442048
 }
