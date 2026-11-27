@@ -401,6 +401,14 @@
       "cours": "Comptabilité Générale",
       "nom": "MULATA MUFONI",
       "sexe": "M"
+    },
+    {
+      "id": 50,
+      "classe": "3ème",
+      "option": "Commercial",
+      "cours": "Fiscalité, Mathématiques Financières",
+      "nom": "LIYANZA KUMBI",
+      "sexe": "F"
     }
   ],
   "customOptions": {
@@ -430,5 +438,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795765419045
+  "ts": 1795765533212
 }
