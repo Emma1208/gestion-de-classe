@@ -51,6 +51,14 @@
       "sexe": "M"
     },
     {
+      "id": 60,
+      "classe": "7ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "NGONGA EKALATU",
+      "sexe": "M"
+    },
+    {
       "id": 57,
       "classe": "7ème",
       "option": "Éducation de base",
@@ -654,5 +662,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795803273198
+  "ts": 1795803307332
 }
