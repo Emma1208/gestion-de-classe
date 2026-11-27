@@ -817,6 +817,99 @@
     },
     "8ème||Éducation de base||Statistiques||38": {
       "p1_ie1": "6"
+    },
+    "7ème||Éducation de base||Géométrie||71": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||64": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||62": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||54": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||53": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||56": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||73": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||70": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||82": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||77": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||69": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||83": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||79": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||58": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||59": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||76": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||74": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||75": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||60": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||63": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||72": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||68": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||65": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||57": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||55": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||66": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||80": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||61": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||67": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||78": {
+      "p2_pres": "20.0"
+    },
+    "7ème||Éducation de base||Géométrie||81": {
+      "p2_pres": "20.0"
     }
   },
   "maxima": {
@@ -880,5 +973,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795804448815
+  "ts": 1795804485692
 }
