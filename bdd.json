@@ -51,6 +51,14 @@
       "sexe": "M"
     },
     {
+      "id": 69,
+      "classe": "7ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "LUKALA MAMBOTE",
+      "sexe": "F"
+    },
+    {
       "id": 58,
       "classe": "7ème",
       "option": "Éducation de base",
@@ -726,5 +734,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795803636927
+  "ts": 1795803650628
 }
