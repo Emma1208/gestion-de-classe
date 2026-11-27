@@ -1204,10 +1204,12 @@
       "p2_pres": "10.0"
     },
     "1ère||Commercial||Comptabilité Générale||49": {
-      "p2_ie1": "42"
+      "p2_ie1": "42",
+      "p2_pres": "60.0"
     },
     "1ère||Commercial||Comptabilité Générale||48": {
-      "p2_ie1": "43"
+      "p2_ie1": "43",
+      "p2_pres": "60.0"
     },
     "7ème||Éducation de base||Algèbre||71": {
       "p2_pres": "40.0"
@@ -1506,5 +1508,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795820586438
+  "ts": 1795820591181
 }
