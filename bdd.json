@@ -59,6 +59,14 @@
       "sexe": "M"
     },
     {
+      "id": 73,
+      "classe": "7ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "KEMBIE TSUMBU",
+      "sexe": "F"
+    },
+    {
       "id": 70,
       "classe": "7ème",
       "option": "Éducation de base",
@@ -758,5 +766,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795803760729
+  "ts": 1795803813113
 }
