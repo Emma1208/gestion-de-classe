@@ -841,10 +841,44 @@
       "x": 120
     }
   },
-  "presences": {},
-  "presenceTeachers": {},
+  "presences": {
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||71": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||64": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||62": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||54": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||53": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||56": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||73": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||70": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||82": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||77": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||69": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||83": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||79": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||58": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||59": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||76": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||74": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||75": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||60": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||63": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||72": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||68": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||65": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||57": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||55": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||66": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||80": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||61": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||67": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||78": "P",
+    "7ème||Éducation de base||Géométrie||2||2026-11-27||81": "P"
+  },
+  "presenceTeachers": {
+    "7ème||Éducation de base||Géométrie||2||2026-11-27": "KAKESA MUDIMBA"
+  },
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795804366242
+  "ts": 1795804448815
 }
