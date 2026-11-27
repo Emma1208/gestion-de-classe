@@ -11,6 +11,14 @@
   },
   "eleves": [
     {
+      "id": 54,
+      "classe": "7ème",
+      "option": "Éducation de base",
+      "cours": "Algèbre, Géométrie, Statistiques, Arithmétique",
+      "nom": "EFAMBE BOKA",
+      "sexe": "M"
+    },
+    {
       "id": 53,
       "classe": "7ème",
       "option": "Éducation de base",
@@ -606,5 +614,5 @@
   "app": "Gestion de classe",
   "version": 1,
   "cle_localStorage": "cahier_cotation_v7_data",
-  "ts": 1795803170915
+  "ts": 1795803183716
 }
